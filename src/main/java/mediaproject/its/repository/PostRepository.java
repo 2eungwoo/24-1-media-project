@@ -2,5 +2,5 @@ package mediaproject.its.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TestRepository extends JpaRepository<Test,Long> {
+public interface PostRepository extends JpaRepository<Post,Long> {
 }

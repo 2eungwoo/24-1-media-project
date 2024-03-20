@@ -17,6 +17,7 @@ configurations {
     }
 }
 
+
 repositories {
     mavenCentral()
 }
@@ -28,6 +29,19 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Spring Boot Starter Test: Spring Boot 테스트 관련 의존성
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // JUnit 5: JUnit 테스트 프레임워크
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+
+    // AssertJ Core
+    testImplementation 'org.assertj:assertj-core:3.19.0'
+
+    // Mockito: Mock 객체 생성 및 테스트 더 쉽게 수행
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
 }
 
 tasks.named('test') {
