@@ -1,5 +1,6 @@
-package mediaproject.its.repository;
+package mediaproject.its.domain.repository;
 
+import mediaproject.its.domain.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post,Long> {

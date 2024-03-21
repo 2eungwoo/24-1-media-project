@@ -2,10 +2,10 @@ package mediaproject.its.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import mediaproject.its.repository.Post;
-import mediaproject.its.dto.PostDto;
-import mediaproject.its.repository.PostRepository;
-import mediaproject.its.dto.UpdatePostRequestDto;
+import mediaproject.its.domain.entity.Post;
+import mediaproject.its.domain.dto.PostDto;
+import mediaproject.its.domain.repository.PostRepository;
+import mediaproject.its.domain.dto.UpdatePostRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

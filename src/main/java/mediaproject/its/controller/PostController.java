@@ -1,10 +1,10 @@
 package mediaproject.its.controller;
 
 import lombok.RequiredArgsConstructor;
-import mediaproject.its.dto.CommonResponseDto;
-import mediaproject.its.repository.Post;
-import mediaproject.its.dto.PostDto;
-import mediaproject.its.dto.UpdatePostRequestDto;
+import mediaproject.its.domain.dto.CommonResponseDto;
+import mediaproject.its.domain.entity.Post;
+import mediaproject.its.domain.dto.PostDto;
+import mediaproject.its.domain.dto.UpdatePostRequestDto;
 import mediaproject.its.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

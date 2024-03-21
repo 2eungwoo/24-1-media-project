@@ -1,4 +1,4 @@
-package mediaproject.its.repository;
+package mediaproject.its.domain.entity;
 
 
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package mediaproject.its.controller;
 
-import mediaproject.its.repository.Post;
-import mediaproject.its.repository.PostRepository;
+import mediaproject.its.domain.entity.Post;
+import mediaproject.its.domain.repository.PostRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
