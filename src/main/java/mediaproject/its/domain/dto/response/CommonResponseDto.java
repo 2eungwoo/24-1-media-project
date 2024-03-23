@@ -1,11 +1,10 @@
-package mediaproject.its.domain.dto;
+package mediaproject.its.domain.dto.response;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
 @Builder
 @AllArgsConstructor
-@Setter
 @Getter
 public class CommonResponseDto<T> {
     private HttpStatus statusCode;
