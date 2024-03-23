@@ -1,7 +1,7 @@
 package mediaproject.its.auth.controller;
 
 import lombok.RequiredArgsConstructor;
-import mediaproject.its.response.response.CommonResponseDto;
+import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.dto.JoinDto;
 import mediaproject.its.auth.service.JoinService;
 import org.springframework.http.HttpStatus;

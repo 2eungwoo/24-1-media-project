@@ -1,7 +1,7 @@
 package mediaproject.its.controller;
 
 import lombok.RequiredArgsConstructor;
-import mediaproject.its.response.response.CommonResponseDto;
+import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.UpdatePostRequestDto;

@@ -1,4 +1,4 @@
-package mediaproject.its.response.error;
+package mediaproject.its.response.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class ErrorResponse {
+public class ErrorResponseDto {
     private final boolean success = false;
     private final HttpStatus httpStatus;
     private final int code;
@@ -23,15 +23,15 @@ public class ErrorResponse {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final List<ValidationError> errors;
 
-    public static ErrorResponse of(HttpStatus httpStatus,int code, String message){
-        return ErrorResponse.builder()
+    public static ErrorResponseDto of(HttpStatus httpStatus, int code, String message){
+        return ErrorResponseDto.builder()
                 .httpStatus(httpStatus)
                 .code(code)
                 .message(message)
                 .build();
     }
-    public static ErrorResponse of(HttpStatus httpStatus,int code, String message, BindingResult bindingResult){
-        return ErrorResponse.builder()
+    public static ErrorResponseDto of(HttpStatus httpStatus, int code, String message, BindingResult bindingResult){
+        return ErrorResponseDto.builder()
                 .httpStatus(httpStatus)
                 .code(code)
                 .message(message)

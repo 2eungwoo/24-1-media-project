@@ -1,4 +1,4 @@
-package mediaproject.its.exceptions.error;
+package mediaproject.its.response.error;
 
 import org.springframework.http.HttpStatus;
 

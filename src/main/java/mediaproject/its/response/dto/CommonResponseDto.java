@@ -1,4 +1,4 @@
-package mediaproject.its.response.response;
+package mediaproject.its.response.dto;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;

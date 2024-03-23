@@ -1,4 +1,4 @@
-package mediaproject.its.exceptions.error;
+package mediaproject.its.response.error;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

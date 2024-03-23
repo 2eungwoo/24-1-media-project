@@ -1,4 +1,4 @@
-package mediaproject.its.exceptions.ex;
+package mediaproject.its.response.exception;
 
 import lombok.Getter;
 import org.springframework.dao.DuplicateKeyException;

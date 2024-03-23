@@ -1,8 +1,8 @@
-package mediaproject.its.exceptions.ex;
+package mediaproject.its.response.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import mediaproject.its.exceptions.error.ErrorCode;
+import mediaproject.its.response.error.ErrorCode;
 
 @Getter
 @RequiredArgsConstructor
