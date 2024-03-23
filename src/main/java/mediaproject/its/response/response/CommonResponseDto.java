@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public class CommonResponseDto<T> {
+    private final boolean success = true;
     private HttpStatus statusCode;
     private String message; //
     private T data;
