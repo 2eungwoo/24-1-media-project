@@ -29,12 +29,12 @@ public class PostService {
     @Transactional
     public String postPost(PostDto postDto){
 
-        Post test = Post.builder()
+        Post newPost = Post.builder()
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
                 .build();
 
-        postRepository.save(test);
+        postRepository.save(newPost);
         return "good";
     }
 

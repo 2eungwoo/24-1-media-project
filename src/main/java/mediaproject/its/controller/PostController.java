@@ -18,31 +18,31 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/test")
+    @GetMapping("/post")
     public ResponseEntity<?> getPost(){
         List<Post> posts = postService.getAllPost();
         return new ResponseEntity<>(new CommonResponseDto<>("포스트 조회 성공", posts), HttpStatus.OK);
     }
 
-    @GetMapping("/test/{id}")
+    @GetMapping("/post/{id}")
     public ResponseEntity<?> getPostById(@PathVariable long id){
         Post post = postService.getPostById(id);
         return new ResponseEntity<>(new CommonResponseDto<>("포스트 단건 조회 성공",post),HttpStatus.OK);
     }
 
-    @PostMapping("/test")
+    @PostMapping("/post")
     public ResponseEntity<?> postPost(@RequestBody PostDto postDto){
         postService.postPost(postDto);
         return new ResponseEntity<>(new CommonResponseDto<>("포스트 등록 성공",postDto),HttpStatus.CREATED);
     }
 
-    @PutMapping("/test/{id}")
+    @PutMapping("/post/{id}")
     public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto updatePostRequestDto){
         Post updatedPost = postService.updatePost(id, updatePostRequestDto);
         return new ResponseEntity<>(new CommonResponseDto<>("포스트 수정 성공",updatedPost),HttpStatus.OK);
     }
 
-    @DeleteMapping("/test/{id}")
+    @DeleteMapping("/post/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id){
         postService.deletePost(id);
         return new ResponseEntity<>(new CommonResponseDto<>("포스트 삭제 성공",null),HttpStatus.OK);

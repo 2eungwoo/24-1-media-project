@@ -16,7 +16,7 @@ import java.util.Objects;
 @ResponseBody
 public class MainController {
 
-    @GetMapping("/")
+    @GetMapping("/main")
     public String mainPage(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
