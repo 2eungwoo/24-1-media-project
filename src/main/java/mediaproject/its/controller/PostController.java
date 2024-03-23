@@ -1,7 +1,10 @@
 package mediaproject.its.controller;
 
 import lombok.RequiredArgsConstructor;
-import mediaproject.its.domain.dto.response.CommonResponseDto;
+import mediaproject.its.exceptions.ex.CustomAppException;
+import mediaproject.its.exceptions.ex.CustomIllegalArgumentException;
+import mediaproject.its.response.error.ErrorResponseDto;
+import mediaproject.its.response.response.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.UpdatePostRequestDto;
@@ -20,53 +23,76 @@ public class PostController {
 
     @GetMapping("/post")
     public ResponseEntity<?> getPost(){
-        List<Post> posts = postService.getAllPost();
-        return ResponseEntity.ok().body(CommonResponseDto.builder()
-                .statusCode(HttpStatus.OK)
-                .message("포스트 조회 성공")
-                .data(posts)
-                .build()
-        );
+        try{
+            List<Post> posts = postService.getAllPost();
+            return ResponseEntity.ok().body(CommonResponseDto.builder()
+                    .statusCode(HttpStatus.OK)
+                    .message("포스트 조회 성공")
+                    .data(posts)
+                    .build()
+            );
+        }catch(CustomAppException ex){
+            throw new CustomAppException("포스트 조회 실패");
+        }
     }
 
     @GetMapping("/post/{id}")
     public ResponseEntity<?> getPostById(@PathVariable long id){
-        Post post = postService.getPostById(id);
-        return ResponseEntity.ok().body(CommonResponseDto.builder()
-                .statusCode(HttpStatus.OK)
-                .message("포스트 조회(단건) 성공")
-                .data(post)
-                .build());
+        try{
+            Post post = postService.getPostById(id);
+            return ResponseEntity.ok().body(CommonResponseDto.builder()
+                    .statusCode(HttpStatus.OK)
+                    .message("포스트 조회(단건) 성공")
+                    .data(post)
+                    .build());
+        }catch(CustomIllegalArgumentException ex){
+            throw new CustomIllegalArgumentException("포스트 조회(단건) 실패");
+        }
+
     }
 
     @PostMapping("/post")
     public ResponseEntity<?> postPost(@RequestBody PostDto postDto){
-        postService.postPost(postDto);
-        return ResponseEntity.ok().body(CommonResponseDto.builder()
-                .statusCode(HttpStatus.CREATED)
-                .message("포스트 등록 성공")
-                .data(postDto)
-                .build());
+        try {
+            postService.postPost(postDto);
+            return ResponseEntity.ok().body(CommonResponseDto.builder()
+                    .statusCode(HttpStatus.CREATED)
+                    .message("포스트 등록 성공")
+                    .data(postDto)
+                    .build());
+        }catch(CustomAppException ex){
+            throw new CustomAppException("포스트 등록 실패");
+        }
     }
 
     @PutMapping("/post/{id}")
     public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto updatePostRequestDto){
-        Post updatedPost = postService.updatePost(id, updatePostRequestDto);
-        return ResponseEntity.ok().body(CommonResponseDto.builder()
-                .statusCode(HttpStatus.OK)
-                .message("포스트 수정 성공")
-                .data(updatedPost)
-                .build());
+        try{
+            Post updatedPost = postService.updatePost(id, updatePostRequestDto);
+            return ResponseEntity.ok().body(CommonResponseDto.builder()
+                    .statusCode(HttpStatus.OK)
+                    .message("포스트 수정 성공")
+                    .data(updatedPost)
+                    .build());
+        }catch(CustomAppException ex){
+            throw new CustomAppException("포스트 수정 실패");
+        }
+
     }
 
     @DeleteMapping("/post/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id){
-        postService.deletePost(id);
-        return ResponseEntity.ok().body(CommonResponseDto.builder()
-                .statusCode(HttpStatus.OK)
-                .message("포스트 삭제 성공")
-                .data(null)
-                .build());
+        try{
+            postService.deletePost(id);
+            return ResponseEntity.ok().body(CommonResponseDto.builder()
+                    .statusCode(HttpStatus.OK)
+                    .message("포스트 삭제 성공")
+                    .data(null)
+                    .build());
+        }catch(CustomAppException ex){
+            throw new CustomAppException("포스트 삭제 실패");
+        }
+
     }
 
 }

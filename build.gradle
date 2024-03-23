@@ -55,6 +55,9 @@ dependencies {
     // Mockito: Mock 객체 생성 및 테스트 더 쉽게 수행
     testImplementation 'org.mockito:mockito-core:3.12.4'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.12.4'
+
+    // aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.named('test') {

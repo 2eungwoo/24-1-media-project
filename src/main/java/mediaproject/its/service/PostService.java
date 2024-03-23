@@ -6,6 +6,8 @@ import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.repository.PostRepository;
 import mediaproject.its.domain.dto.UpdatePostRequestDto;
+import mediaproject.its.exceptions.ex.CustomAppException;
+import mediaproject.its.exceptions.ex.CustomIllegalArgumentException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +25,11 @@ public class PostService {
 
     @Transactional
     public Post getPostById(long id){
-        return postRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("id 찾을 수 없음"));
+        return postRepository.findById(id).orElseThrow(()-> new CustomIllegalArgumentException("존재하지 않는 게시글"));
     }
 
     @Transactional
-    public String postPost(PostDto postDto){
+    public void postPost(PostDto postDto){
 
         Post newPost = Post.builder()
                 .title(postDto.getTitle())
@@ -35,12 +37,11 @@ public class PostService {
                 .build();
 
         postRepository.save(newPost);
-        return "good";
     }
 
     @Transactional
     public Post updatePost(long id, UpdatePostRequestDto request){
-        Post post = postRepository.findById(id).orElseThrow();
+        Post post = postRepository.findById(id).orElseThrow(()-> new CustomIllegalArgumentException("존재하지 않는 게시글"));
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
         postRepository.save(post);
