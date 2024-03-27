@@ -1,5 +1,6 @@
 package mediaproject.its.auth;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Getter
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
@@ -28,6 +30,7 @@ public class CustomUserDetails implements UserDetails {
 
         return collection;
     }
+
 
     @Override
     public String getPassword() {

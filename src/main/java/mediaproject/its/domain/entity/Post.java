@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @Column(name = "title")
     private String title;
@@ -28,6 +28,10 @@ public class Post {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @PrePersist
     public void createDate(){

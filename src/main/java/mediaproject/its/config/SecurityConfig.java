@@ -63,6 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/","/login", "/main", "/join","/join/admin","/its/**").permitAll()
                         .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated());
 
         //cors 설정
