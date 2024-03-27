@@ -30,7 +30,7 @@ public class Post {
     private LocalDateTime createdAt;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER) // todo : LAZT로딩을 바꿔야하는데, serialize 에러나서 이거 해결하려고 dto로 보내주는 작업중.
     private User user;
 
     @PrePersist

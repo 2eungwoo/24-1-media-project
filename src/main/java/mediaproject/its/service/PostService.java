@@ -1,11 +1,12 @@
 package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
+import mediaproject.its.domain.dto.responseDto.UserResponseDto;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.PostRepository;
-import mediaproject.its.domain.dto.UpdatePostRequestDto;
+import mediaproject.its.domain.dto.responseDto.UpdatePostRequestDto;
 import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
@@ -45,11 +46,18 @@ public class PostService {
              throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage(), UserErrorCode.USER_NOT_FOUND_ERROR);
         }
 
+        // todo : fix bug
+        // 유저 응답 dto를 만들어서 toEntity()로 엔티티 변환하고, post할때 이름,id만 넣게끔 했는데 안됨. 비밀번호까지 다들어감
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setUserName(username);
+        userResponseDto.setUserId(user.getId());
+
+        User userEntity = userResponseDto.toEntity();
 
         Post newPost = Post.builder()
                 .title(postDto.getTitle())
                 .content(postDto.getContent())
-                .user(user)
+                .user(userEntity)
                 .build();
 
         postRepository.save(newPost);

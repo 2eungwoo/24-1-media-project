@@ -1,4 +1,4 @@
-package mediaproject.its.domain.dto;
+package mediaproject.its.domain.dto.responseDto;
 
 import lombok.Getter;
 import lombok.Setter;
