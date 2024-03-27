@@ -4,12 +4,11 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 
 @Builder
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class CommonResponseDto<T> {
-    private final boolean success = true;
-    private HttpStatus statusCode;
-    private String message; //
-    private T data;
+    private final HttpStatus statusCode;
+    private final String message; //
+    private final T data;
 }
 

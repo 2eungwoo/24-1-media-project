@@ -1,12 +1,14 @@
 package mediaproject.its.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.repository.PostRepository;
 import mediaproject.its.domain.dto.UpdatePostRequestDto;
+import mediaproject.its.response.error.CommonErrorCode;
+import mediaproject.its.response.exception.CustomRestApiException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,14 +18,15 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Post> getAllPost(){
         return postRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Post getPostById(long id){
-        return postRepository.findById(id).orElseThrow();
+        return postRepository.findById(id)
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(), CommonErrorCode.NOT_FOUND));
     }
 
     @Transactional

@@ -28,6 +28,6 @@ public class MainController {
         String userRole = auth.getAuthority();
 
         return "main controller" + userName + userRole;
-    }
 
+    }
 }

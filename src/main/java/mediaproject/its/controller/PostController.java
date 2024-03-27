@@ -18,7 +18,7 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/post")
+    @GetMapping("/its/posts")
     public ResponseEntity<?> getPost(){
         List<Post> posts = postService.getAllPost();
         return ResponseEntity.ok().body(CommonResponseDto.builder()
@@ -29,7 +29,7 @@ public class PostController {
         );
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/its/post/{id}")
     public ResponseEntity<?> getPostById(@PathVariable long id){
         Post post = postService.getPostById(id);
         return ResponseEntity.ok().body(CommonResponseDto.builder()
@@ -39,7 +39,7 @@ public class PostController {
                 .build());
     }
 
-    @PostMapping("/post")
+    @PostMapping("/its/post")
     public ResponseEntity<?> postPost(@RequestBody PostDto postDto){
         postService.postPost(postDto);
         return ResponseEntity.ok().body(CommonResponseDto.builder()
@@ -49,7 +49,7 @@ public class PostController {
                 .build());
     }
 
-    @PutMapping("/post/{id}")
+    @PutMapping("/its/post/{id}")
     public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody UpdatePostRequestDto updatePostRequestDto){
         Post updatedPost = postService.updatePost(id, updatePostRequestDto);
         return ResponseEntity.ok().body(CommonResponseDto.builder()
@@ -59,7 +59,7 @@ public class PostController {
                 .build());
     }
 
-    @DeleteMapping("/post/{id}")
+    @DeleteMapping("/its/post/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id){
         postService.deletePost(id);
         return ResponseEntity.ok().body(CommonResponseDto.builder()
