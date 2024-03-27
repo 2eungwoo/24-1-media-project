@@ -22,14 +22,15 @@ public class JoinService {
 
         Boolean isExist = userRepository.existsByUsername(username);
 
-        if(isExist)
+        if(isExist) {
             return false;
+        }
         else{
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(bCryptPasswordEncoder.encode(password));
-            user.setRole("ROLE_USER");
-
+            User user = User.builder()
+                    .username(username)
+                    .password(bCryptPasswordEncoder.encode(password))
+                    .role("ROLE_USER")
+                    .build();
             userRepository.save(user);
             return true;
         }

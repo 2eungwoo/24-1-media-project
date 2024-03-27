@@ -61,10 +61,9 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .anyRequest().permitAll());
-//                        .requestMatchers("/","/login", "/main", "/join").permitAll()
-//                        .requestMatchers("/admin").hasRole("ADMIN")
-//                        .anyRequest().authenticated());
+                        .requestMatchers("/","/login", "/main", "/join","/test/**").permitAll()
+                        .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated());
 
         //cors 설정
         http
