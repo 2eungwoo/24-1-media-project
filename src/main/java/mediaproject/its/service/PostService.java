@@ -9,6 +9,7 @@ import mediaproject.its.domain.dto.UpdatePostRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ public class PostService {
 
     @Transactional
     public Post getPostById(long id){
-        return postRepository.findById(id).orElseThrow();
+        return postRepository.findById(id).orElseThrow(()-> new IllegalArgumentException());
     }
 
     @Transactional

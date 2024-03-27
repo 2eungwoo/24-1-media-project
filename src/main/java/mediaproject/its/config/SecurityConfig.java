@@ -61,7 +61,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/login", "/main", "/join","/join/admin","/test/**").permitAll()
+                        .requestMatchers("/","/login", "/main", "/join","/join/admin","/its/**").permitAll()
                         .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
 

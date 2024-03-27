@@ -14,11 +14,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/its")
 public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/post")
+    @GetMapping("/posts")
     public ResponseEntity<?> getPost(){
         List<Post> posts = postService.getAllPost();
         return ResponseEntity.ok().body(CommonResponseDto.builder()
