@@ -41,7 +41,7 @@ public class PostController {
                 .build());
     }
 
-    @PostMapping("/api/its/post")
+    @PostMapping("/its/api/post")
     public ResponseEntity<?> postPost(@RequestBody PostDto postDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         // todo : bug fix
