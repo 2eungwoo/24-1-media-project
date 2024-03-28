@@ -54,10 +54,11 @@ public class JWTFilter extends OncePerRequestFilter {
         String role = jwtUtil.getRole(token);
 
         //user Entity를 생성하여 값 set
-        User user = new User();
-        user.setUsername(username);
-        user.setRole(role);
-        user.setPassword("temppassword"); // username,role만 해주면 되는데 얘도 해줘야하니까 그냥 db에서 계속 조회하게 안하려고 임시값으로 설정
+        User user = User.builder()
+                .username(username)
+                .role(role)
+                .password("temppassword") // username,role만 해주면 되는데 얘도 해줘야하니까 그냥 db에서 계속 조회하게 안하려고 임시값으로 설정
+                .build();
 
         //UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(user);

@@ -48,9 +48,14 @@ public class PostController {
         // 임시 세션에서(SecurityContextHolder) .getId()하면 아이디가 안불러와짐. 항상 0만 불러와짐.
         // 그래서 임시방편으로 username으로 조치
         String username = customUserDetails.getUser().getUsername();
+//        String userRole = customUserDetails.getUser().getRole();
 //        int userId = customUserDetails.getUser().getId();
-//
-//        System.out.println("user : " + userId);
+
+//        System.out.println("11===============================");
+//        System.out.println("log in user role : "+ userRole);
+//        System.out.println("log in user name : "+ username);
+//        System.out.println("log in user id : "+ userId); // 왜 얘만 안나오냐 이말이지
+//        System.out.println("11===============================");
 
         postService.postPost(postDto,username);
 

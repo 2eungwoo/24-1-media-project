@@ -37,22 +37,29 @@ public class PostService {
     @Transactional
     public void postPost(PostDto postDto, String username){
 
-        System.out.println("username : "+username);
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(()->new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage(), UserErrorCode.USER_NOT_FOUND_ERROR));
-
         User user = userRepository.findByUsername(username);
         if(user == null){
              throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage(), UserErrorCode.USER_NOT_FOUND_ERROR);
         }
 
+//        System.out.println("22======================");
+//        System.out.println("User Id : "+user.getId()); // 여기서는 유저네임으로 유저를 찾았으니까 아이디가 당연히 잘 뽑힌다.
+//        System.out.println("22======================");
+
+
         // todo : fix bug
         // 유저 응답 dto를 만들어서 toEntity()로 엔티티 변환하고, post할때 이름,id만 넣게끔 했는데 안됨. 비밀번호까지 다들어감
         UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setUserName(username);
+        userResponseDto.setUserName(user.getUsername());
         userResponseDto.setUserId(user.getId());
 
         User userEntity = userResponseDto.toEntity();
+
+        System.out.println("22======================");
+        System.out.println("User Entity username : "+ userEntity.getUsername());
+        System.out.println("User Entity userid: "+ userEntity.getId());
+        System.out.println("22======================");
+
 
         Post newPost = Post.builder()
                 .title(postDto.getTitle())
