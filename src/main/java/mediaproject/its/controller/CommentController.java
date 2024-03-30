@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mediaproject.its.auth.CustomUserDetails;
 import mediaproject.its.domain.dto.CommentDto;
 import mediaproject.its.domain.dto.request.CommentRequestDto;
+import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.service.CommentService;
 import org.apache.coyote.Response;
@@ -22,15 +23,16 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/its/api/post/{postId}/comment")
-    public ResponseEntity<?> saveComment(@RequestBody CommentRequestDto commentRequestDto, @PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public ResponseEntity<?> postComment(@RequestBody CommentDto.Request commentRequest, @PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        System.out.println("postId : "+postId);
-        commentService.saveComment(commentRequestDto, postId, username);
+        Comment newComment = commentService.postComment(commentRequest, postId, username);
+
+        CommentDto.Response commentResponseDto = new CommentDto.Response(newComment);
 
         return ResponseEntity.ok().body(CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
                 .message("댓글 작성 성공")
-                .data(commentRequestDto)
+                .data(commentResponseDto)
                 .build());
     }
 

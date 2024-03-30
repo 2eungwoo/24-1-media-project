@@ -24,7 +24,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
     @Transactional
-    public void saveComment(CommentRequestDto commentRequestDto, int postId, String username){
+    public Comment postComment(CommentDto.Request commentRequest, int postId, String username){
 
         User user = userRepository.findByUsername(username);
         if(user == null){
@@ -34,14 +34,15 @@ public class CommentService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(),CommonErrorCode.NOT_FOUND));
 
-        commentRequestDto.setContent(post.getContent());
-        commentRequestDto.setPostId(post.getId());
-        commentRequestDto.setUserId(user.getId());
+        commentRequest.setPost(post);
+        commentRequest.setUser(user);
+        commentRequest.setContent(commentRequest.getContent());
+        commentRequest.setCommentId(commentRequest.getCommentId());
 
-
-        Comment newComment = commentRequestDto.toEntity();
+        Comment newComment = commentRequest.toEntity();
 
         commentRepository.save(newComment);
+        return newComment;
     }
 
     @Transactional

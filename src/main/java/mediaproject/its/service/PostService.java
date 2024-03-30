@@ -1,6 +1,7 @@
 package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
+import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.request.PostRequestDto;
 import mediaproject.its.domain.dto.response.UserResponseDto;
 import mediaproject.its.domain.entity.Post;
@@ -35,29 +36,30 @@ public class PostService {
     }
 
     @Transactional
-    public void postPost(PostRequestDto postRequestDto, String username){
+    public Post postPost(PostDto.Request postRequest, String username){
 
         User user = userRepository.findByUsername(username);
         if(user == null){
              throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage(), UserErrorCode.USER_NOT_FOUND_ERROR);
         }
 
-//        System.out.println("22======================");
-//        System.out.println("User Id : "+user.getId()); // 여기서는 유저네임으로 유저를 찾았으니까 아이디가 당연히 잘 뽑힌다.
-//        System.out.println("22======================");
-
-        postRequestDto.setTitle(postRequestDto.getTitle());
-        postRequestDto.setContent(postRequestDto.getContent());
-        postRequestDto.setUserId(user.getId());
+        PostDto.Request postRequestDto = PostDto.Request.builder()
+                .title(postRequest.getTitle())
+                .content(postRequest.getContent())
+                .user(user)
+                .build();
 
         Post newPost = postRequestDto.toEntity();
 
         postRepository.save(newPost);
+        return newPost;
     }
 
+    // todo : entity에 직접 set 하지 않게 어떻게하지?
     @Transactional
     public Post updatePost(int postId, UpdatePostRequestDto request){
-        Post post = postRepository.findById(postId).orElseThrow();
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(), CommonErrorCode.NOT_FOUND));
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
         postRepository.save(post);
