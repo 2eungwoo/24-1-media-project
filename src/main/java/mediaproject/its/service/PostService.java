@@ -53,7 +53,7 @@ public class PostService {
         return newPost;
     }
 
-    // todo : entity에 직접 set 하지 않게 어떻게하지?
+    // todo : entity에 직접 set 하지 않게 어떻게하지? -> Post 엔티티 내에서 update 메소드 구현하면 되나?
     @Transactional
     public Post updatePost(int postId, UpdatePostRequestDto request){
         Post post = postRepository.findById(postId)
