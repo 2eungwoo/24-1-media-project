@@ -22,11 +22,11 @@ public class Comment {
     private String content;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.EAGER) // todo : 얘도 LAZY로 바꿔야하는 문제
+    @ManyToOne(fetch = FetchType.LAZY) // todo : 얘도 LAZY로 바꿔야하는 문제
     private User user;
 
     @JoinColumn(name = "post_id")
-    @ManyToOne(fetch = FetchType.EAGER) // todo : 얘도 LAZY로 바꿔야하는 문제
+    @ManyToOne(fetch = FetchType.LAZY) // todo : 얘도 LAZY로 바꿔야하는 문제
     private Post post;
 
     private LocalDateTime createdAt;
