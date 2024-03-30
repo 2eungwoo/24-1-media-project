@@ -34,7 +34,7 @@ public class Post {
     private LocalDateTime updatedAt;
 
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.EAGER) // todo : LAZT로딩을 바꿔야하는데, serialize 에러나서 이거 해결하려고 dto로 보내주는 작업중.
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
