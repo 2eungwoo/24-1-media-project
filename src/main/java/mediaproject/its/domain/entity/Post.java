@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -29,12 +30,20 @@ public class Post {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.EAGER) // todo : LAZT로딩을 바꿔야하는데, serialize 에러나서 이거 해결하려고 dto로 보내주는 작업중.
     private User user;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("createdAt asc")
+    private List<Comment> comments;
+
     @PrePersist
     public void createDate(){
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }

@@ -2,6 +2,8 @@ package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.CommentDto;
+import mediaproject.its.domain.dto.request.CommentRequestDto;
+import mediaproject.its.domain.dto.response.PostResponseDto;
 import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
@@ -22,7 +24,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
     @Transactional
-    public void saveComment(CommentDto commentDto, int postId, String username){
+    public void saveComment(CommentRequestDto commentRequestDto, int postId, String username){
 
         User user = userRepository.findByUsername(username);
         if(user == null){
@@ -32,11 +34,12 @@ public class CommentService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(),CommonErrorCode.NOT_FOUND));
 
-        Comment newComment = Comment.builder()
-                .user(user)
-                .post(post)
-                .content(commentDto.getContent())
-                .build();
+        commentRequestDto.setContent(post.getContent());
+        commentRequestDto.setPostId(post.getId());
+        commentRequestDto.setUserId(user.getId());
+
+
+        Comment newComment = commentRequestDto.toEntity();
 
         commentRepository.save(newComment);
     }

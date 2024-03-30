@@ -1,12 +1,12 @@
 package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
-import mediaproject.its.domain.dto.responseDto.UserResponseDto;
+import mediaproject.its.domain.dto.request.PostRequestDto;
+import mediaproject.its.domain.dto.response.UserResponseDto;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.PostRepository;
-import mediaproject.its.domain.dto.responseDto.UpdatePostRequestDto;
+import mediaproject.its.domain.dto.request.UpdatePostRequestDto;
 import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
@@ -35,7 +35,7 @@ public class PostService {
     }
 
     @Transactional
-    public void postPost(PostDto postDto, String username){
+    public void postPost(PostRequestDto postRequestDto, String username){
 
         User user = userRepository.findByUsername(username);
         if(user == null){
@@ -46,26 +46,11 @@ public class PostService {
 //        System.out.println("User Id : "+user.getId()); // 여기서는 유저네임으로 유저를 찾았으니까 아이디가 당연히 잘 뽑힌다.
 //        System.out.println("22======================");
 
+        postRequestDto.setTitle(postRequestDto.getTitle());
+        postRequestDto.setContent(postRequestDto.getContent());
+        postRequestDto.setUserId(user.getId());
 
-        // todo : fix bug
-        // 유저 응답 dto를 만들어서 toEntity()로 엔티티 변환하고, post할때 이름,id만 넣게끔 했는데 안됨. 비밀번호까지 다들어감
-        UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setUserName(user.getUsername());
-        userResponseDto.setUserId(user.getId());
-
-        User userEntity = userResponseDto.toEntity();
-
-        System.out.println("22======================");
-        System.out.println("User Entity username : "+ userEntity.getUsername());
-        System.out.println("User Entity userid: "+ userEntity.getId());
-        System.out.println("22======================");
-
-
-        Post newPost = Post.builder()
-                .title(postDto.getTitle())
-                .content(postDto.getContent())
-                .user(userEntity)
-                .build();
+        Post newPost = postRequestDto.toEntity();
 
         postRepository.save(newPost);
     }

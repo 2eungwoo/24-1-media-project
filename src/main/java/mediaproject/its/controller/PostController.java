@@ -2,10 +2,10 @@ package mediaproject.its.controller;
 
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.auth.CustomUserDetails;
+import mediaproject.its.domain.dto.request.PostRequestDto;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.dto.PostDto;
-import mediaproject.its.domain.dto.responseDto.UpdatePostRequestDto;
+import mediaproject.its.domain.dto.request.UpdatePostRequestDto;
 import mediaproject.its.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +42,7 @@ public class PostController {
     }
 
     @PostMapping("/its/api/post")
-    public ResponseEntity<?> postPost(@RequestBody PostDto postDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public ResponseEntity<?> postPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         // todo : bug fix
         // 임시 세션에서(SecurityContextHolder) .getId()하면 아이디가 안불러와짐. 항상 0만 불러와짐.
@@ -57,12 +57,12 @@ public class PostController {
 //        System.out.println("log in user id : "+ userId); // 왜 얘만 안나오냐 이말이지
 //        System.out.println("11===============================");
 
-        postService.postPost(postDto,username);
+        postService.postPost(postRequestDto,username);
 
         return ResponseEntity.ok().body(CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
                 .message("포스트 등록 성공")
-                .data(postDto)
+                .data(postRequestDto)
                 .build());
     }
 

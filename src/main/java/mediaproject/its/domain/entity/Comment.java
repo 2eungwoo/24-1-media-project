@@ -25,9 +25,9 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER) // todo : 얘도 LAZY로 바꿔야하는 문제
     private User user;
 
-//    @JoinColumn(name = "post_id")
-//    @ManyToOne(fetch = FetchType.EAGER) // todo : 얘도 LAZY로 바꿔야하는 문제
-//    private Post post;
+    @JoinColumn(name = "post_id")
+    @ManyToOne(fetch = FetchType.EAGER) // todo : 얘도 LAZY로 바꿔야하는 문제
+    private Post post;
 
     private LocalDateTime createdAt;
 
