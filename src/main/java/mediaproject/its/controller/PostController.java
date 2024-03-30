@@ -24,6 +24,9 @@ public class PostController {
 
     private final PostService postService;
 
+    // todo : List로 ResponseDto 형태로 어떻게 반환하지?
+    // 해결! https://velog.io/@nyong_i/List%EB%A5%BC-Dto%EB%A1%9C-%EB%B0%98%ED%99%98%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95-RESTful-API
+
     // todo : 설계원칙4에 따라 좋은 설계를 위한 절충이 필요하다?? (컨트롤러에서 일정량의 로직 넣은 것에 대하여. for 서비스단에서 Post타입 리턴 일관성 유지)
     // todo : 생각해보고 수정하려면 해보자 그냥 서비스단에서 리턴타입을 변경하는 편이 그나마 더 나은 방법인가??
     @GetMapping("/its/posts")
