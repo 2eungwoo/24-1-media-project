@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import mediaproject.its.auth.CustomUserDetails;
 import mediaproject.its.domain.dto.CommentDto;
 import mediaproject.its.domain.dto.PostDto;
-import mediaproject.its.domain.dto.request.PostRequestDto;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.dto.request.UpdatePostRequestDto;

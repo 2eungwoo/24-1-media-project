@@ -9,9 +9,6 @@ import mediaproject.its.domain.entity.User;
 import java.time.LocalDateTime;
 
 public class CommentDto {
-    private User user;
-    private Post post;
-    private String content;
 
     @Getter
     @Setter

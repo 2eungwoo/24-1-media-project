@@ -2,8 +2,6 @@ package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.PostDto;
-import mediaproject.its.domain.dto.request.PostRequestDto;
-import mediaproject.its.domain.dto.response.UserResponseDto;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.PostRepository;
