@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.JoinDto;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.UserRepository;
+import mediaproject.its.response.error.CommonErrorCode;
+import mediaproject.its.response.error.UserErrorCode;
+import mediaproject.its.response.exception.CustomDuplicateMemberException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,43 +19,43 @@ public class JoinService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public boolean joinUser(JoinDto joinDto){
+    public void joinUser(JoinDto joinDto){
         String username = joinDto.getUsername();
         String password = joinDto.getPassword();
 
-        Boolean isExist = userRepository.existsByUsername(username);
+        User user = userRepository.findByUsername(username);
 
-        if(isExist) {
-            return false;
+        if(user != null){
+            throw new CustomDuplicateMemberException(UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage(), UserErrorCode.USER_ALREADY_EXISTS_ERROR);
         }
-        else{
-            User user = User.builder()
-                    .username(username)
-                    .password(bCryptPasswordEncoder.encode(password))
-                    .role("ROLE_USER")
-                    .build();
-            userRepository.save(user);
-            return true;
-        }
+
+        User newUser = User.builder()
+                .username(username)
+                .password(bCryptPasswordEncoder.encode(password))
+                .role("ROLE_USER")
+                .build();
+
+        userRepository.save(newUser);
+
     }
 
     @Transactional
-    public boolean joinAdmin(JoinDto joinDto){
+    public void joinAdmin(JoinDto joinDto){
         String username = joinDto.getUsername();
         String password = joinDto.getPassword();
 
-        Boolean isExist = userRepository.existsByUsername(username);
+        User user = userRepository.findByUsername(username);
 
-        if(isExist)
-            return false;
-        else{
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(bCryptPasswordEncoder.encode(password));
-            user.setRole("ROLE_ADMIN");
-
-            userRepository.save(user);
-            return true;
+        if(user != null){
+            throw new CustomDuplicateMemberException(UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage(), UserErrorCode.USER_ALREADY_EXISTS_ERROR);
         }
+
+        User newUser = User.builder()
+                .username(username)
+                .password(bCryptPasswordEncoder.encode(password))
+                .role("ROLE_ADMIN")
+                .build();
+
+        userRepository.save(newUser);
     }
 }

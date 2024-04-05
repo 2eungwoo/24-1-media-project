@@ -58,12 +58,20 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-        //경로별 인가 작업
+//        //경로별 인가 작업
+//        http
+//                .authorizeHttpRequests((auth) -> auth
+//                        .requestMatchers("/","/login", "/main", "/join","/join/admin","/its/**").permitAll()
+//                        .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/api/**").authenticated()
+//                        .anyRequest().authenticated());
+
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/","/login", "/main", "/join","/join/admin","/its/**").permitAll()
                         .requestMatchers("/admin","/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated());
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll());
 
         //cors 설정
         http

@@ -5,7 +5,13 @@ import lombok.RequiredArgsConstructor;
 import mediaproject.its.response.error.ErrorCode;
 
 @Getter
-@RequiredArgsConstructor
-public class RestApiException extends RuntimeException{
+public class CustomRestApiException extends RuntimeException{
+
     private final ErrorCode errorCode;
+
+    public CustomRestApiException(String message, ErrorCode errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
 }
