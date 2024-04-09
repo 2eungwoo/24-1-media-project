@@ -4,10 +4,7 @@ import mediaproject.its.response.dto.ErrorResponseDto;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.ErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
-import mediaproject.its.response.exception.CustomDuplicateMemberException;
-import mediaproject.its.response.exception.CustomIllegalArgumentException;
-import mediaproject.its.response.exception.CustomRestApiException;
-import mediaproject.its.response.exception.CustomValidationException;
+import mediaproject.its.response.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,22 +41,21 @@ public class ExceptionHandlerAdvice  {
         return new ErrorResponseDto<>(httpStatus,message,errorCode);
     }
 
+    @ExceptionHandler(CustomUnAuthorizedException.class)
+    public ErrorResponseDto<?> customUnAuthorizedException(CustomUnAuthorizedException e){
+        HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
+        String message = e.getMessage();
+        ErrorCode errorCode = UserErrorCode.USER_UNAUTHORIZED;
+        System.out.println("CustomUnAuthorizedException class call");
+        return new ErrorResponseDto<>(httpStatus,message,errorCode);
+    }
+
     public ErrorResponseDto<?> customIllegalArgumentException(CustomIllegalArgumentException e) {
         HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
         String message = e.getMessage();
         ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
         return new ErrorResponseDto<>(httpStatus,message,errorCode);
     }
-
-
-//    @ExceptionHandler(CustomValidationException.class)
-//    public ErrorResponseDto<?> customValidationException(CustomValidationException e){
-//        HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
-//        String message = e.getMessage();
-//        makeValidErrorResponse();
-//        return new ErrorResponseDto<>(httpStatus,message,)
-//    }
-
 
 
 

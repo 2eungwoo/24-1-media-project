@@ -21,7 +21,7 @@ public class PostDto {
         private User user;
         private List<Comment> comments;
 
-        // Entity -> Dto
+        // Dto -> Entity
         public Post toEntity(){
             return Post.builder()
                     .title(title)

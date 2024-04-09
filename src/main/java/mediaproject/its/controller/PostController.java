@@ -79,9 +79,12 @@ public class PostController {
                 .build());
     }
 
-    @PutMapping("/its/post/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable int id, @RequestBody UpdatePostRequestDto updatePostRequestDto){
-        Post updatedPost = postService.updatePost(id, updatePostRequestDto);
+    @PutMapping("/its/post/{postId}")
+    public ResponseEntity<?> updatePost(@PathVariable int postId, @RequestBody UpdatePostRequestDto updatePostRequestDto,@AuthenticationPrincipal CustomUserDetails customUserDetails){
+
+        String username = customUserDetails.getUser().getUsername();
+        Post updatedPost = postService.updatePost(postId, updatePostRequestDto, username);
+
         PostDto.Response updatedPostResponseDto = new PostDto.Response(updatedPost);
 
         return ResponseEntity.ok().body(CommonResponseDto.builder()
