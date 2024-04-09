@@ -23,7 +23,6 @@ public class JoinController {
                 .message("회원가입 성공")
                 .data(joinDto)
                 .build());
-
     }
 
     @PostMapping("/join/admin")

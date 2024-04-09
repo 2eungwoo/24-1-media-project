@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,8 @@ public class PostService {
     @Transactional(readOnly = true)
     public Post getPostById(int postId){
         return postRepository.findById(postId)
-                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(), CommonErrorCode.NOT_FOUND));
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
+
     }
 
     @Transactional
@@ -39,7 +41,7 @@ public class PostService {
 
         User user = userRepository.findByUsername(username);
         if(user == null){
-             throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage(), UserErrorCode.USER_NOT_FOUND_ERROR);
+             throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
         }
 
         PostDto.Request postRequestDto = PostDto.Request.builder()
@@ -60,7 +62,7 @@ public class PostService {
     @Transactional
     public Post updatePost(int postId, UpdatePostRequestDto request){
         Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(), CommonErrorCode.NOT_FOUND));
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
         post.update(request.getTitle(),request.getContent(), LocalDateTime.now());
         postRepository.save(post);

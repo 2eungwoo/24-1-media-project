@@ -10,5 +10,6 @@ public class CommonResponseDto<T> {
     private final HttpStatus statusCode;
     private final String message; //
     private final T data;
+
 }
 

@@ -6,10 +6,9 @@ import mediaproject.its.response.error.ErrorCode;
 
 @Getter
 @RequiredArgsConstructor
-public class CustomRestApiException extends RuntimeException{
+public class CustomIllegalArgumentException extends RuntimeException{
 
     private final ErrorCode errorCode;
     private final String message;
-
 
 }
