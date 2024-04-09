@@ -2,6 +2,7 @@ package mediaproject.its.domain.dto;
 
 
 import lombok.*;
+import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 
@@ -18,6 +19,7 @@ public class PostDto {
         private String title;
         private String content;
         private User user;
+        private List<Comment> comments;
 
         // Entity -> Dto
         public Post toEntity(){
@@ -25,6 +27,7 @@ public class PostDto {
                     .title(title)
                     .content(content)
                     .user(user)
+                    .comments(comments)
                     .build();
         }
     }

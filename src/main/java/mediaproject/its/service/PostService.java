@@ -46,6 +46,7 @@ public class PostService {
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())
                 .user(user)
+                .comments(null)
                 .build();
 
         Post newPost = postRequestDto.toEntity();
