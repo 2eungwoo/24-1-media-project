@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/its")
 public class PostController {
 
     private final PostService postService;

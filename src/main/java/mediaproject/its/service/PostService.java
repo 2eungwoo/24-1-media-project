@@ -31,7 +31,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public Post getPostById(int postId){
         return postRepository.findById(postId)
-                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(), CommonErrorCode.NOT_FOUND));
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
     }
 
@@ -40,7 +40,7 @@ public class PostService {
 
         User user = userRepository.findByUsername(username);
         if(user == null){
-             throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR.getMessage(), UserErrorCode.USER_NOT_FOUND_ERROR);
+             throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
         }
 
         PostDto.Request postRequestDto = PostDto.Request.builder()
@@ -59,7 +59,7 @@ public class PostService {
     @Transactional
     public Post updatePost(int postId, UpdatePostRequestDto request){
         Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(), CommonErrorCode.NOT_FOUND));
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
         postRepository.save(post);

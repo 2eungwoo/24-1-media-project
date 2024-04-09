@@ -26,11 +26,11 @@ public class CommentService {
 
         User user = userRepository.findByUsername(username);
         if(user == null){
-            throw new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(),CommonErrorCode.NOT_FOUND);
+            throw new CustomRestApiException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage());
         }
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND.getMessage(),CommonErrorCode.NOT_FOUND));
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage()));
 
         commentRequest.setPost(post);
         commentRequest.setUser(user);
