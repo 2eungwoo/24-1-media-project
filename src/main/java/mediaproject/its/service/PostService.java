@@ -51,7 +51,7 @@ public class PostService {
                 .title(postRequest.getTitle())
                 .content(postRequest.getContent())
                 .user(user)
-                .comments(null)
+                .comments(postRequest.getComments())
                 .build();
 
         Post newPost = postRequestDto.toEntity();
@@ -85,8 +85,24 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(int postId){
+    public Post deletePost(int postId,String username){
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
+
+        User postAuthor = post.getUser();
+        User user = userRepository.findByUsername(username);
+
+        if(!user.equals(postAuthor)){
+            throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
+        }
+
+        if(user == null){
+            throw new CustomIllegalArgumentException(UserErrorCode.USER_ALREADY_EXISTS_ERROR, UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
+        }
+
         postRepository.deleteById(postId);
+        return post;
     }
 
 

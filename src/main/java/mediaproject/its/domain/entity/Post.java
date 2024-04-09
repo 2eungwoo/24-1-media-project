@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -39,7 +40,7 @@ public class Post {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("createdAt asc")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @PrePersist
     public void createDate(){

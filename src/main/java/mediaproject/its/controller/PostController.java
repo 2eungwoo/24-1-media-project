@@ -94,13 +94,19 @@ public class PostController {
                 .build());
     }
 
-    @DeleteMapping("/its/post/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable int id){
-        postService.deletePost(id);
+    @DeleteMapping("/its/post/{postId}")
+    public ResponseEntity<?> deletePost(@PathVariable int postId,@AuthenticationPrincipal CustomUserDetails customUserDetails ){
+
+        String username = customUserDetails.getUser().getUsername();
+
+        Post deletedPost = postService.deletePost(postId,username);
+
+        PostDto.Response deletedPostDto = new PostDto.Response(deletedPost);
+
         return ResponseEntity.ok().body(CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("포스트 삭제 성공")
-                .data(null)
+                .data(deletedPostDto)
                 .build());
     }
 
