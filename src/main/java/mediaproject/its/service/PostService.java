@@ -31,11 +31,14 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Post getPostById(int postId){
-        return postRepository.findById(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
+        post.viewCountUp();
+
+        return post;
     }
 
     // todo : 올바른 에러를 날려주는게 맞는지??... 세션만료 에러를 내야하나?

@@ -42,6 +42,7 @@ public class PostDto {
         private String username;
         private String title;
         private String content;
+        private int viewCount;
         private List<CommentDto.Response> comments;
 
         // Entity -> Dto
@@ -50,6 +51,7 @@ public class PostDto {
             this.username = post.getUser().getUsername();
             this.title = post.getTitle();
             this.content = post.getContent();
+            this.viewCount = post.getViewCount();
             this.comments = post.getComments().stream()
                     .map(CommentDto.Response::new)
                     .collect(Collectors.toList());

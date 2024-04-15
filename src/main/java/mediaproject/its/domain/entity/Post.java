@@ -28,6 +28,9 @@ public class Post {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "view_count")
+    private int viewCount;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -52,5 +55,9 @@ public class Post {
         this.title = title;
         this.content = content;
         this.updatedAt = updatedAt;
+    }
+
+    public void viewCountUp(){
+        this.viewCount += 1;
     }
 }
