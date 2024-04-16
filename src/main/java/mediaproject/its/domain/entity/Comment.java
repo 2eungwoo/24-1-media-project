@@ -29,10 +29,19 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @PrePersist
     public void createdAt(){
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void update(String content, LocalDateTime updatedAt){
+        this.content = content;
+        this.updatedAt = updatedAt;
     }
 }

@@ -5,6 +5,7 @@ import lombok.Setter;
 import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +37,8 @@ public class CommentDto {
         private String content;
         private String username;
         private int postId;
+        private LocalDateTime updatedAt;
+        private LocalDateTime createdAt;
 
         // Entity -> Dto
         public Response(Comment comment) {
@@ -43,6 +46,8 @@ public class CommentDto {
             this.content = comment.getContent();
             this.username = comment.getUser().getUsername();
             this.postId = comment.getPost().getId();
+            this.createdAt = comment.getCreatedAt();
+            this.updatedAt = LocalDateTime.now();
         }
     }
 

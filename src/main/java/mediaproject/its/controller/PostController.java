@@ -94,7 +94,7 @@ public class PostController {
                 .build());
     }
 
-    @DeleteMapping("/its/post/{postId}")
+    @DeleteMapping("/its/api/post/{postId}")
     public ResponseEntity<?> deletePost(@PathVariable int postId,@AuthenticationPrincipal CustomUserDetails customUserDetails ){
 
         String username = customUserDetails.getUser().getUsername();
