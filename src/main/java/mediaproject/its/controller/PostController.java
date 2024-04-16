@@ -79,7 +79,7 @@ public class PostController {
                 .build());
     }
 
-    @PutMapping("/its/post/{postId}")
+    @PutMapping("/its/api/post/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable int postId, @RequestBody UpdatePostRequestDto updatePostRequestDto,@AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
