@@ -3,6 +3,8 @@ package mediaproject.its.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +24,15 @@ public class User {
 
     @Column(name = "role")
     private String role;
+
+    @Column(name = "user_description")
+    private String description;
+
+    @Column(name = "user_email")
+    private String email;
+
+    public void updateProfile(String description, String email){
+        this.description = description;
+        this.email = email;
+    }
 }
