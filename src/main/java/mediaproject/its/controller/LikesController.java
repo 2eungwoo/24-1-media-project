@@ -53,7 +53,7 @@ public class LikesController {
         return ResponseEntity.ok(CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .data(likesResponseDto)
-                .message("게시글 좋아요 등록 성공")
+                .message("게시글 좋아요 삭제 성공")
                 .build());
 
     }
