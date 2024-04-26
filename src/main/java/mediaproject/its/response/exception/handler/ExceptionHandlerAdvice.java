@@ -50,6 +50,7 @@ public class ExceptionHandlerAdvice  {
         return new ErrorResponseDto<>(httpStatus,message,errorCode);
     }
 
+    @ExceptionHandler(CustomIllegalArgumentException.class)
     public ErrorResponseDto<?> customIllegalArgumentException(CustomIllegalArgumentException e) {
         HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
         String message = e.getMessage();
