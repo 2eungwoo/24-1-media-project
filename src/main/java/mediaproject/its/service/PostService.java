@@ -5,7 +5,6 @@ import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.PostRepository;
-import mediaproject.its.domain.dto.request.UpdatePostRequestDto;
 import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
@@ -67,7 +66,7 @@ public class PostService {
     // todo : todo 해결, 그러나 피드백 필요
     // todo : 올바른 에러를 날려주는게 맞는지??... 세션만료 에러를 내야하나?
     @Transactional
-    public Post updatePost(int postId, UpdatePostRequestDto request, String username){
+    public Post updatePost(int postId, PostDto.Request request, String username){
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 

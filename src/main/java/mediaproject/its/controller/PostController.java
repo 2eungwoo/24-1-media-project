@@ -6,7 +6,6 @@ import mediaproject.its.domain.dto.CommentDto;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.dto.request.UpdatePostRequestDto;
 import mediaproject.its.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +79,7 @@ public class PostController {
     }
 
     @PutMapping("/its/api/post/{postId}")
-    public ResponseEntity<?> updatePost(@PathVariable int postId, @RequestBody UpdatePostRequestDto updatePostRequestDto,@AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public ResponseEntity<?> updatePost(@PathVariable int postId, @RequestBody PostDto.Request updatePostRequestDto,@AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
         Post updatedPost = postService.updatePost(postId, updatePostRequestDto, username);
