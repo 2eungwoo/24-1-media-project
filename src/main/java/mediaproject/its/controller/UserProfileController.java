@@ -17,7 +17,7 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
-    @GetMapping("/its/profile/{userId}")
+    @GetMapping("/its/api/profile/{userId}")
     public ResponseEntity<?> getProfileById(@PathVariable int userId){
         User user = userProfileService.getProfileById(userId);
 
