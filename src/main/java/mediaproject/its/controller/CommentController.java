@@ -21,21 +21,21 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/its/api/{postId}/comment")
-    public ResponseEntity<?> postComment(@RequestBody CommentDto.Request commentRequest, @PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public CommonResponseDto<?> postComment(@RequestBody CommentDto.Request commentRequest, @PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
         Comment newComment = commentService.postComment(commentRequest, postId, username);
 
         CommentDto.Response commentResponseDto = new CommentDto.Response(newComment);
 
-        return ResponseEntity.ok().body(CommonResponseDto.builder()
+        return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
                 .message("댓글 작성 성공")
                 .data(commentResponseDto)
-                .build());
+                .build();
     }
 
     @PutMapping("/its/api/comment/{commentId}")
-    public ResponseEntity<?> updateComment(@PathVariable int commentId,
+    public CommonResponseDto<?> updateComment(@PathVariable int commentId,
                                            @RequestBody CommentDto.Request commentRequestDto,
                                            @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
@@ -44,26 +44,26 @@ public class CommentController {
 
         CommentDto.Response updatedCommentDto = new CommentDto.Response(updatedComment);
 
-        return ResponseEntity.ok().body(CommonResponseDto.builder()
+        return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("댓글 수정 성공")
                 .data(updatedCommentDto)
-                .build());
+                .build();
     }
 
 
     @DeleteMapping("/its/api/comment/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable int commentId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public CommonResponseDto<?> deleteComment(@PathVariable int commentId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
         Comment comment = commentService.deleteComment(commentId, username);
 
         CommentDto.Response deletedComment = new CommentDto.Response(comment);
 
-        return ResponseEntity.ok(CommonResponseDto.builder()
+        return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("댓글 삭제 성공")
                 .data(deletedComment)
-                .build());
+                .build();
     }
 }

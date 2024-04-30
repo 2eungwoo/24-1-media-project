@@ -18,20 +18,20 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
     @GetMapping("/its/api/profile/{userId}")
-    public ResponseEntity<?> getProfileById(@PathVariable int userId){
+    public CommonResponseDto<?> getProfileById(@PathVariable int userId){
         User user = userProfileService.getProfileById(userId);
 
         ProfileDto.Response userResponseDto = new ProfileDto.Response(user);
 
-        return ResponseEntity.ok(CommonResponseDto.builder()
+        return CommonResponseDto.builder()
                         .statusCode(HttpStatus.OK)
                         .data(userResponseDto)
                         .message("유저 프로필 조회 성공")
-                .build());
+                .build();
     }
 
     @PutMapping("/its/api/profile/{userId}")
-    public ResponseEntity<?> updatedProfile(@PathVariable int userId,
+    public CommonResponseDto<?> updatedProfile(@PathVariable int userId,
                                             @RequestBody ProfileDto.Request profileRequestDto,
                                             @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
@@ -41,11 +41,11 @@ public class UserProfileController {
 
         ProfileDto.Response userResponseDto = new ProfileDto.Response(updatedUser);
 
-        return ResponseEntity.ok(CommonResponseDto.builder()
+        return CommonResponseDto.builder()
                         .statusCode(HttpStatus.OK)
                         .message("유저 프로필 수정 성공")
                         .data(userResponseDto)
-                .build());
+                .build();
 
     }
 }

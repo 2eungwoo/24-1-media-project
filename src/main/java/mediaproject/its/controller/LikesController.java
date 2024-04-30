@@ -22,7 +22,7 @@ public class LikesController {
     private final LikesService likesService;
 
     @PostMapping("/its/api/likes/{postId}")
-    public ResponseEntity<?> addPostLikes(@PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public CommonResponseDto<?> addPostLikes(@PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         // int userId = customUserDetails.getUser().getId();
         String username = customUserDetails.getUser().getUsername();
@@ -35,26 +35,26 @@ public class LikesController {
 
         LikesDto.Response likesResponseDto = new LikesDto.Response(username,postId,0);
 
-        return ResponseEntity.ok(CommonResponseDto.builder()
+        return CommonResponseDto.builder()
                         .statusCode(HttpStatus.CREATED)
                         .data(likesResponseDto)
                         .message("게시글 좋아요 등록 성공")
-                .build());
+                .build();
     }
 
     @DeleteMapping("/its/api/likes/{likesId}")
-    public ResponseEntity<?> deletePostLikes(@PathVariable int likesId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public CommonResponseDto<?> deletePostLikes(@PathVariable int likesId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
 
         Likes deletedLikes = likesService.deletePostLikes(username, likesId);
         LikesDto.Response likesResponseDto = new LikesDto.Response(deletedLikes);
 
-        return ResponseEntity.ok(CommonResponseDto.builder()
+        return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .data(likesResponseDto)
                 .message("게시글 좋아요 삭제 성공")
-                .build());
+                .build();
 
     }
 }
