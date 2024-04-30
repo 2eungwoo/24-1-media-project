@@ -43,8 +43,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
-    // Spring Boot Starter Test
+    // Spring Boot Starter Test + Spring Security Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 
     // JUnit 5: JUnit 테스트 프레임워크
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
