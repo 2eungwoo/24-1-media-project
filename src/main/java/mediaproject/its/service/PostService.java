@@ -2,28 +2,29 @@ package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.PostDto;
+import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
+import mediaproject.its.domain.repository.LikesRepository;
 import mediaproject.its.domain.repository.PostRepository;
-import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
-import mediaproject.its.response.exception.CustomIllegalArgumentException;
 import mediaproject.its.response.exception.CustomRestApiException;
 import mediaproject.its.response.exception.CustomUnAuthorizedException;
+import mediaproject.its.service.Util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final LikesRepository likesRepository;
+    private final UserUtil userUtil;
 
     @Transactional(readOnly = true)
     public List<Post> getAllPost(){
@@ -44,10 +45,7 @@ public class PostService {
     @Transactional
     public Post postPost(PostDto.Request postRequest, String username){
 
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-             throw new CustomRestApiException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
-        }
+        User user = userUtil.findUser(username);
 
         PostDto.Request postRequestDto = PostDto.Request.builder()
                 .title(postRequest.getTitle())
@@ -71,14 +69,10 @@ public class PostService {
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
         User postAuthor = post.getUser();
-        User user = userRepository.findByUsername(username);
+        User user = userUtil.findUser(username);
 
         if(!user.equals(postAuthor)){
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
-        }
-
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_ALREADY_EXISTS_ERROR, UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
         }
 
         post.update(request.getTitle(),request.getContent(), LocalDateTime.now());
@@ -93,14 +87,10 @@ public class PostService {
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
         User postAuthor = post.getUser();
-        User user = userRepository.findByUsername(username);
+        User user = userUtil.findUser(username);
 
         if(!user.equals(postAuthor)){
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
-        }
-
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_ALREADY_EXISTS_ERROR, UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
         }
 
         postRepository.deleteById(postId);
@@ -108,4 +98,14 @@ public class PostService {
     }
 
 
+    @Transactional(readOnly = true)
+    public List<PostInterface> findPostsLikedByUser(String username, int userId){
+
+        userUtil.validUser(username);
+
+        List<PostInterface> posts = likesRepository.findPostsLikedByUser(userId);
+        return posts;
+
+
+    }
 }

@@ -7,12 +7,11 @@ import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.CommentRepository;
 import mediaproject.its.domain.repository.PostRepository;
-import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
-import mediaproject.its.response.exception.CustomIllegalArgumentException;
 import mediaproject.its.response.exception.CustomRestApiException;
 import mediaproject.its.response.exception.CustomUnAuthorizedException;
+import mediaproject.its.service.Util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +22,13 @@ import java.time.LocalDateTime;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final UserUtil userUtil;
 
     @Transactional
     public Comment postComment(CommentDto.Request commentRequestDto, int postId, String username){
 
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new CustomRestApiException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage());
-        }
+        User user = userUtil.findUser(username);
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage()));
@@ -54,14 +50,11 @@ public class CommentService {
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
         User commentAuthor = comment.getUser();
-        User user = userRepository.findByUsername(username);
+        User user = userUtil.findUser(username);
+
 
         if(!user.equals(commentAuthor)){
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
-        }
-
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_ALREADY_EXISTS_ERROR, UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
         }
 
         comment.update(commentRequestDto.getContent(),LocalDateTime.now());
@@ -78,14 +71,10 @@ public class CommentService {
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
         User commentAuthor = comment.getUser();
-        User user = userRepository.findByUsername(username);
+        User user = userUtil.findUser(username);
 
         if(!user.equals(commentAuthor)){
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
-        }
-
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_ALREADY_EXISTS_ERROR, UserErrorCode.USER_ALREADY_EXISTS_ERROR.getMessage());
         }
 
         commentRepository.deleteById(commentId);

@@ -3,27 +3,25 @@ package mediaproject.its.service;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.entity.Likes;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.LikesRepository;
 import mediaproject.its.domain.repository.PostRepository;
-import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomIllegalArgumentException;
 import mediaproject.its.response.exception.CustomRestApiException;
+import mediaproject.its.service.Util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class LikesService {
 
     private final LikesRepository likesRepository;
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final UserUtil userUtil;
 
     @Transactional
     public void addPostLikes(String username, int postId){
@@ -31,7 +29,7 @@ public class LikesService {
 //        userRepository.findById(userId)
 //                .orElseThrow(()-> new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
 
-        User user = findUser(username);
+        User user = userUtil.findUser(username);
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomIllegalArgumentException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage()));
@@ -48,7 +46,7 @@ public class LikesService {
     @Transactional
     public Likes deletePostLikes(String username, int likesId){
 
-        User user = findUser(username);
+        User user = userUtil.findUser(username);
 
         Likes likes = likesRepository.findById(likesId)
                         .orElseThrow(()-> new CustomIllegalArgumentException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage()));
@@ -63,33 +61,5 @@ public class LikesService {
         return likes;
     }
 
-    @Transactional(readOnly = true)
-    public List<PostInterface> findPostsLikedByUser(String username, int userId){
-
-        validUser(username);
-
-        List<PostInterface> posts = likesRepository.findPostsLikedByUser(userId);
-        return posts;
-
-
-    }
-
-    public void validUser(String username){
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
-        }
-
-    }
-
-    public User findUser(String username){
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
-        }
-
-        return user;
-
-    }
 
 }

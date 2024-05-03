@@ -7,7 +7,6 @@ import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.service.LikesService;
 import mediaproject.its.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
-    private final LikesService likesService;
 
     // todo : List로 ResponseDto 형태로 어떻게 반환하지?
     // 해결! https://velog.io/@nyong_i/List%EB%A5%BC-Dto%EB%A1%9C-%EB%B0%98%ED%99%98%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95-RESTful-API
@@ -62,6 +60,31 @@ public class PostController {
                 .message("포스트 조회(단건) 성공")
                 .data(postResponseDto)
                 .build();
+    }
+
+    @GetMapping("/its/posts/hot")
+    public CommonResponseDto<?> getPostsOrderedByViewCount(){
+
+//        List<Post> posts = postService.getAllPost();
+//        List<PostDto.Response> postsResponseDto = new ArrayList<>();
+//
+//        for(Post p : posts){
+//            PostDto.Response postsDto = PostDto.Response.builder()
+//                    .postId(p.getId())
+//                    .title(p.getTitle())
+//                    .content(p.getContent())
+//                    .username(p.getUser().getUsername())
+//                    .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
+//                    .build();
+//            postsResponseDto.add(postsDto);
+//        }
+//        return CommonResponseDto.builder()
+//                .statusCode(HttpStatus.OK)
+//                .message("포스트 조회 성공")
+//                .data(postsResponseDto)
+//                .build();
+        return null;
+
     }
 
     // todo : 게시글 작성 시 코멘트가 null이기 때문에, post작성 자체는 되지만 rest api error 발생. comment 초기값을 지정해주면 되나??
@@ -116,7 +139,7 @@ public class PostController {
     public CommonResponseDto<?> findPostsLikedByUser(@PathVariable int userId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
         String username = customUserDetails.getUser().getUsername();
-        List<PostInterface> posts = likesService.findPostsLikedByUser(username, userId);
+        List<PostInterface> posts = postService.findPostsLikedByUser(username, userId);
 
         List<PostDto.InterfaceResponse> postsInterfaceResponseDto = new ArrayList<>();
 

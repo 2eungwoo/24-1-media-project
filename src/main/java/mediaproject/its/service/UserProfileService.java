@@ -5,8 +5,8 @@ import mediaproject.its.domain.dto.ProfileDto;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.UserErrorCode;
-import mediaproject.its.response.exception.CustomIllegalArgumentException;
 import mediaproject.its.response.exception.CustomUnAuthorizedException;
+import mediaproject.its.service.Util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,26 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserProfileService {
 
     private final UserRepository userRepository;
+    private final UserUtil userUtil;
 
     @Transactional(readOnly = true)
     public User getProfileById(int userId){
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
-
-        return user;
+        return userUtil.findUserById(userId);
     }
 
     @Transactional
     public User updateProfile(int userId, String username, ProfileDto.Request profileRequestDto){
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
-
-        User targetUser = userRepository.findByUsername(username);
-        if(targetUser == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
-        }
+        User user = userUtil.findUserById(userId);
+        User targetUser = userUtil.findUser(username);
 
         if(!user.equals(targetUser)){
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
