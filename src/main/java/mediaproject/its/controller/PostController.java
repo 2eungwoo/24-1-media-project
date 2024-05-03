@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import mediaproject.its.auth.CustomUserDetails;
 import mediaproject.its.domain.dto.CommentDto;
 import mediaproject.its.domain.dto.PostDto;
+import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
+import mediaproject.its.service.LikesService;
 import mediaproject.its.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
+    private final LikesService likesService;
 
     // todo : List로 ResponseDto 형태로 어떻게 반환하지?
     // 해결! https://velog.io/@nyong_i/List%EB%A5%BC-Dto%EB%A1%9C-%EB%B0%98%ED%99%98%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95-RESTful-API
@@ -108,4 +111,26 @@ public class PostController {
                 .build();
     }
 
+
+    @GetMapping("/its/api/likes/posts/{userId}")
+    public CommonResponseDto<?> findPostsLikedByUser(@PathVariable int userId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        String username = customUserDetails.getUser().getUsername();
+        List<PostInterface> posts = likesService.findPostsLikedByUser(username, userId);
+
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = new ArrayList<>();
+
+        for (PostInterface p : posts) {
+            PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
+                    .postId(p.getId())
+                    .title(p.getTitle())
+                    .build();
+            postsInterfaceResponseDto.add(postsDto);
+        }
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.CREATED)
+                .message("좋아요 등록 포스트 리스트 조회 성공")
+                .data(postsInterfaceResponseDto)
+                .build();
+    }
 }
