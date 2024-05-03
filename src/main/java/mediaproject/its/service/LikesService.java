@@ -31,21 +31,16 @@ public class LikesService {
 //        userRepository.findById(userId)
 //                .orElseThrow(()-> new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
 
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
-        }
+        User user = findUser(username);
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomIllegalArgumentException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage()));
+
         User postAuthor = post.getUser();
 
         if(user == postAuthor){
             throw new CustomRestApiException(CommonErrorCode.INVALID_PARAMETER,"자신의 게시글에는 좋아요 할 수 없음");
         }
-
-        postRepository.findById(postId)
-                .orElseThrow(()-> new CustomIllegalArgumentException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage()));
 
         likesRepository.customSave(user.getId(),postId);
     }
@@ -53,10 +48,7 @@ public class LikesService {
     @Transactional
     public Likes deletePostLikes(String username, int likesId){
 
-        User user = userRepository.findByUsername(username);
-        if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
-        }
+        User user = findUser(username);
 
         Likes likes = likesRepository.findById(likesId)
                         .orElseThrow(()-> new CustomIllegalArgumentException(CommonErrorCode.NOT_FOUND,CommonErrorCode.NOT_FOUND.getMessage()));
@@ -89,4 +81,15 @@ public class LikesService {
         }
 
     }
+
+    public User findUser(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
+        }
+
+        return user;
+
+    }
+
 }
