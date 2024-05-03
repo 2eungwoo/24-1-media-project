@@ -4,6 +4,7 @@ package mediaproject.its.domain.dto;
 import lombok.*;
 import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
+import mediaproject.its.domain.entity.PostInterface;
 import mediaproject.its.domain.entity.User;
 
 import java.util.List;
@@ -55,6 +56,23 @@ public class PostDto {
             this.comments = post.getComments().stream()
                     .map(CommentDto.Response::new)
                     .collect(Collectors.toList());
+        }
+
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class InterfaceResponse{
+        private int postId;
+        private String title;
+
+        // Entity -> Dto
+        public InterfaceResponse(PostInterface postInterface){
+            this.postId = postInterface.getId();
+            this.title = postInterface.getTitle();
         }
     }
 

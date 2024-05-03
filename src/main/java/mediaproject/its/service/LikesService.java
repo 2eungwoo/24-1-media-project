@@ -3,6 +3,7 @@ package mediaproject.its.service;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.entity.Likes;
 import mediaproject.its.domain.entity.Post;
+import mediaproject.its.domain.entity.PostInterface;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.LikesRepository;
 import mediaproject.its.domain.repository.PostRepository;
@@ -13,6 +14,8 @@ import mediaproject.its.response.exception.CustomIllegalArgumentException;
 import mediaproject.its.response.exception.CustomRestApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,4 +71,22 @@ public class LikesService {
         return likes;
     }
 
+    @Transactional(readOnly = true)
+    public List<PostInterface> findPostsLikedByUser(String username, int userId){
+
+        validUser(username);
+
+        List<PostInterface> posts = likesRepository.findPostsLikedByUser(userId);
+        return posts;
+
+
+    }
+
+    public void validUser(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
+        }
+
+    }
 }
