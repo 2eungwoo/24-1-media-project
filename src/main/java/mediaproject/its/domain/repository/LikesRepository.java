@@ -1,12 +1,10 @@
 package mediaproject.its.domain.repository;
 
 import mediaproject.its.domain.entity.Likes;
-import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.entity.PostInterface;
+import mediaproject.its.domain.dto.PostInterface;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

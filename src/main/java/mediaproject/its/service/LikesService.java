@@ -3,7 +3,7 @@ package mediaproject.its.service;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.entity.Likes;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.entity.PostInterface;
+import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.LikesRepository;
 import mediaproject.its.domain.repository.PostRepository;
