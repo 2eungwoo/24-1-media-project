@@ -63,7 +63,7 @@ public class PostController {
                 .build();
     }
 
-    @GetMapping("/its/posts/hot")
+    @GetMapping("/its/posts/hot-view")
     public CommonResponseDto<?> getPostsOrderedByViewCount(){
 
         List<PostInterface> posts = postService.getPostsOrderedByViewCount();
@@ -79,11 +79,30 @@ public class PostController {
         }
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
-                .message("좋아요 등록 포스트 리스트 조회 성공")
+                .message("조회수 많은 순 포스트 조회 성공")
                 .data(postsInterfaceResponseDto)
                 .build();
+    }
 
+    @GetMapping("/its/posts/hot-likes")
+    public CommonResponseDto<?> getPostsOrderedByLikesCount(){
 
+        List<PostInterface> posts = postService.getPostsOrderedByLikesCount();
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = new ArrayList<>();
+
+        for (PostInterface p : posts) {
+            PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
+                    .postId(p.getId())
+                    .title(p.getTitle())
+                    .view_count(p.getView_count())
+                    .build();
+            postsInterfaceResponseDto.add(postsDto);
+        }
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.CREATED)
+                .message("좋아요 많은 순 포스트 조회 성공")
+                .data(postsInterfaceResponseDto)
+                .build();
     }
 
     // todo : 게시글 작성 시 코멘트가 null이기 때문에, post작성 자체는 되지만 rest api error 발생. comment 초기값을 지정해주면 되나??

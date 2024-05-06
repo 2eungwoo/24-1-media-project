@@ -31,6 +31,9 @@ public class Post {
     @Column(name = "view_count")
     private int viewCount;
 
+    @Column(name = "likes_count")
+    private int likesCount;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -61,4 +64,5 @@ public class Post {
     public void viewCountUp(){
         this.viewCount += 1;
     }
+    public void likesCountUp() { this.likesCount += 1; }
 }

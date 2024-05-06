@@ -46,6 +46,11 @@ public class PostService {
         return postRepository.findHotPostsByViewCount();
     }
 
+    @Transactional(readOnly = true)
+    public List<PostInterface> getPostsOrderedByLikesCount(){
+        return postRepository.findHotPostsByLikesCount();
+    }
+
 
     // todo : 올바른 에러를 날려주는게 맞는지??... 세션만료 에러를 내야하나?
     @Transactional

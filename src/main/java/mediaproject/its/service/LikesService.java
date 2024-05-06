@@ -41,6 +41,7 @@ public class LikesService {
         }
 
         likesRepository.customSave(user.getId(),postId);
+        post.viewCountUp();
     }
 
     @Transactional
