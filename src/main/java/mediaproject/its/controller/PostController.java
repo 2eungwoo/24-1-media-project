@@ -39,6 +39,7 @@ public class PostController {
                     .content(p.getContent())
                     .username(p.getUser().getUsername())
                     .viewCount(p.getViewCount())
+                    .likesCount(p.getLikesCount())
                     .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
                     .build();
             postsResponseDto.add(postsDto);
@@ -94,7 +95,7 @@ public class PostController {
             PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
                     .postId(p.getId())
                     .title(p.getTitle())
-                    .view_count(p.getView_count())
+                    .likes_count(p.getLikes_count())
                     .build();
             postsInterfaceResponseDto.add(postsDto);
         }

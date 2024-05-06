@@ -43,6 +43,7 @@ public class PostDto {
         private String title;
         private String content;
         private int viewCount;
+        private int likesCount;
         private List<CommentDto.Response> comments;
 
         // Entity -> Dto
@@ -52,6 +53,7 @@ public class PostDto {
             this.title = post.getTitle();
             this.content = post.getContent();
             this.viewCount = post.getViewCount();
+            this.likesCount = post.getLikesCount();
             this.comments = post.getComments().stream()
                     .map(CommentDto.Response::new)
                     .collect(Collectors.toList());
@@ -68,12 +70,14 @@ public class PostDto {
         private Integer postId;
         private String title;
         private Integer view_count;
+        private Integer likes_count;
 
         // Entity -> Dto
         public InterfaceResponse(PostInterface postInterface){
             this.postId = postInterface.getId();
             this.title = postInterface.getTitle();
             this.view_count = postInterface.getView_count();
+            this.likes_count = postInterface.getLikes_count();
         }
     }
 

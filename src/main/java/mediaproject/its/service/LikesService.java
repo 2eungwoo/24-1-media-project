@@ -40,8 +40,8 @@ public class LikesService {
             throw new CustomRestApiException(CommonErrorCode.INVALID_PARAMETER,"자신의 게시글에는 좋아요 할 수 없음");
         }
 
+        post.likesCountUp();
         likesRepository.customSave(user.getId(),postId);
-        post.viewCountUp();
     }
 
     @Transactional
