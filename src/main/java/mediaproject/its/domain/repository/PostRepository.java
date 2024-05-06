@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post,Integer> {
 
-    @Query(value = "SELECT post FROM post ORDER BY view_count DESC LIMIT 10;", nativeQuery = true)
-    List<PostInterface> findHotPosts();
-}
-
-/*
-
-    select post
-    from post
-    order by viewcount desc
+    /*
+    select p.*
+    from post p
+    order by view_count desc
     limit 10;
+    */
+    @Query(value = "SELECT p.* FROM post p ORDER BY view_count DESC LIMIT 10;", nativeQuery = true)
+    List<PostInterface> findHotPostsByViewCount();
 
- */
+
+
+}

@@ -65,13 +65,15 @@ public class PostDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class InterfaceResponse{
-        private int postId;
+        private Integer postId;
         private String title;
+        private Integer view_count;
 
         // Entity -> Dto
         public InterfaceResponse(PostInterface postInterface){
             this.postId = postInterface.getId();
             this.title = postInterface.getTitle();
+            this.view_count = postInterface.getView_count();
         }
     }
 

@@ -38,6 +38,7 @@ public class PostController {
                     .title(p.getTitle())
                     .content(p.getContent())
                     .username(p.getUser().getUsername())
+                    .viewCount(p.getViewCount())
                     .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
                     .build();
             postsResponseDto.add(postsDto);
@@ -65,25 +66,23 @@ public class PostController {
     @GetMapping("/its/posts/hot")
     public CommonResponseDto<?> getPostsOrderedByViewCount(){
 
-//        List<Post> posts = postService.getAllPost();
-//        List<PostDto.Response> postsResponseDto = new ArrayList<>();
-//
-//        for(Post p : posts){
-//            PostDto.Response postsDto = PostDto.Response.builder()
-//                    .postId(p.getId())
-//                    .title(p.getTitle())
-//                    .content(p.getContent())
-//                    .username(p.getUser().getUsername())
-//                    .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
-//                    .build();
-//            postsResponseDto.add(postsDto);
-//        }
-//        return CommonResponseDto.builder()
-//                .statusCode(HttpStatus.OK)
-//                .message("포스트 조회 성공")
-//                .data(postsResponseDto)
-//                .build();
-        return null;
+        List<PostInterface> posts = postService.getPostsOrderedByViewCount();
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = new ArrayList<>();
+
+        for (PostInterface p : posts) {
+            PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
+                    .postId(p.getId())
+                    .title(p.getTitle())
+                    .view_count(p.getView_count())
+                    .build();
+            postsInterfaceResponseDto.add(postsDto);
+        }
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.CREATED)
+                .message("좋아요 등록 포스트 리스트 조회 성공")
+                .data(postsInterfaceResponseDto)
+                .build();
+
 
     }
 

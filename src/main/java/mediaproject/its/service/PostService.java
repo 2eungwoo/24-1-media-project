@@ -41,6 +41,12 @@ public class PostService {
         return post;
     }
 
+    @Transactional(readOnly = true)
+    public List<PostInterface> getPostsOrderedByViewCount(){
+        return postRepository.findHotPostsByViewCount();
+    }
+
+
     // todo : 올바른 에러를 날려주는게 맞는지??... 세션만료 에러를 내야하나?
     @Transactional
     public Post postPost(PostDto.Request postRequest, String username){
@@ -105,7 +111,5 @@ public class PostService {
 
         List<PostInterface> posts = likesRepository.findPostsLikedByUser(userId);
         return posts;
-
-
     }
 }
