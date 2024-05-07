@@ -6,6 +6,7 @@ import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class PostDto {
                     .title(title)
                     .content(content)
                     .user(user)
-                    .comments(comments)
+                    .comments(new ArrayList<>())
                     .build();
         }
     }
@@ -44,7 +45,7 @@ public class PostDto {
         private String content;
         private int viewCount;
         private int likesCount;
-        private List<CommentDto.Response> comments;
+        private List<CommentDto.Response> comments = new ArrayList<>();
 
         // Entity -> Dto
         public Response(Post post){

@@ -46,7 +46,6 @@ public class Post {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("createdAt asc")
-    @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
     @PrePersist
