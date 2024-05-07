@@ -27,35 +27,39 @@ public class ExceptionHandlerAdvice  {
     @ExceptionHandler(CustomRestApiException.class)
     public ErrorResponseDto<?> customRestApiException(CustomRestApiException e) {
         HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
+        int errorStatus = e.getErrorCode().getStatus();
         String message = e.getMessage();
         ErrorCode errorCode = e.getErrorCode();
-        return new ErrorResponseDto<>(httpStatus,message,errorCode);
+        return new ErrorResponseDto<>(errorStatus,httpStatus,message,errorCode);
     }
 
     @ExceptionHandler(CustomDuplicateMemberException.class)
     public ErrorResponseDto<?> customDuplicateMemberException(CustomDuplicateMemberException e){
         HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
+        int errorStatus = e.getErrorCode().getStatus();
         String message = e.getMessage();
         ErrorCode errorCode = UserErrorCode.USER_ALREADY_EXISTS_ERROR;
         System.out.println("customDuplicatieMemberException class call");
-        return new ErrorResponseDto<>(httpStatus,message,errorCode);
+        return new ErrorResponseDto<>(errorStatus,httpStatus,message,errorCode);
     }
 
     @ExceptionHandler(CustomUnAuthorizedException.class)
     public ErrorResponseDto<?> customUnAuthorizedException(CustomUnAuthorizedException e){
         HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
+        int errorStatus = e.getErrorCode().getStatus();
         String message = e.getMessage();
         ErrorCode errorCode = UserErrorCode.USER_UNAUTHORIZED;
         System.out.println("CustomUnAuthorizedException class call");
-        return new ErrorResponseDto<>(httpStatus,message,errorCode);
+        return new ErrorResponseDto<>(errorStatus,httpStatus,message,errorCode);
     }
 
     @ExceptionHandler(CustomIllegalArgumentException.class)
     public ErrorResponseDto<?> customIllegalArgumentException(CustomIllegalArgumentException e) {
         HttpStatus httpStatus = e.getErrorCode().getHttpStatus();
+        int errorStatus = e.getErrorCode().getStatus();
         String message = e.getMessage();
         ErrorCode errorCode = CommonErrorCode.INVALID_PARAMETER;
-        return new ErrorResponseDto<>(httpStatus,message,errorCode);
+        return new ErrorResponseDto<>(errorStatus,httpStatus,message,errorCode);
     }
 
 

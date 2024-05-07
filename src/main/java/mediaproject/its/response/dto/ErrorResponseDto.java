@@ -15,27 +15,9 @@ import java.util.List;
 @Getter
 public class ErrorResponseDto<T> {
     private final boolean success = false;
+    private final int errorStatus;
     private final HttpStatus httpStatus;
     private final String message;
     private final ErrorCode errorCode;
-
-//    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//    private final List<ValidationError> validErrors;
-//
-//    @Getter
-//    @Builder
-//    @RequiredArgsConstructor
-//    public static class ValidationError {
-//
-//        private final String field;
-//        private final String message;
-//        // todo : method naming. of 말고 다른거로 하고싶음. of로 한다면 왜 of로 쓰는지 이유를 알고싶음
-//        public static ValidationError of(final FieldError fieldError) {
-//            return ValidationError.builder()
-//                    .field(fieldError.getField())
-//                    .message(fieldError.getDefaultMessage())
-//                    .build();
-//        }
-//    }
 
 }
