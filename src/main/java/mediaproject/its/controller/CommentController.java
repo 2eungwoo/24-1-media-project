@@ -20,7 +20,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/its/api/{postId}/comment")
+    @PostMapping("/its/api/comment/{postId}")
     public CommonResponseDto<?> postComment(@RequestBody CommentDto.Request commentRequest, @PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
         Comment newComment = commentService.postComment(commentRequest, postId, username);
