@@ -75,6 +75,7 @@ public class PostController {
                     .postId(p.getId())
                     .title(p.getTitle())
                     .view_count(p.getView_count())
+                    .likes_count(p.getLikes_count())
                     .build();
             postsInterfaceResponseDto.add(postsDto);
         }
@@ -96,6 +97,7 @@ public class PostController {
                     .postId(p.getId())
                     .title(p.getTitle())
                     .likes_count(p.getLikes_count())
+                    .view_count(p.getView_count())
                     .build();
             postsInterfaceResponseDto.add(postsDto);
         }
