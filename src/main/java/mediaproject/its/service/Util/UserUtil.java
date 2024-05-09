@@ -5,6 +5,7 @@ import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomIllegalArgumentException;
+import mediaproject.its.response.exception.CustomUnAuthorizedException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class UserUtil {
     public void validUser(String username){
         User user = userRepository.findByUsername(username);
         if(user == null){
-            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
+            throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
         }
     }
 
