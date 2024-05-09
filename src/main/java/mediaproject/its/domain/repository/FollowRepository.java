@@ -12,13 +12,6 @@ import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow,Integer> {
 
-//    @Query(value = "SELECT COUNT(*) FROM subscribe WHERE fromUserId = :principalId AND toUserId = :pageUserId", nativeQuery = true)
-//    int mSubscribeState(@Param("principalId") int principalId, @Param("pageUserId") int pageUserId);
-//
-//    @Query(value = "SELECT COUNT(*) FROM subscribe WHERE fromUserId = :pageUserId", nativeQuery = true)
-//    int mSubscribeCount(@Param("pageUserId") int pageUserId);
-
-
     @Modifying
     @Query(value = "INSERT INTO follow(from_user, to_user) VALUES(:fromUserId, :toUserId)",nativeQuery = true)
     void customAddFollow(int fromUserId, int toUserId);
@@ -33,7 +26,6 @@ public interface FollowRepository extends JpaRepository<Follow,Integer> {
     @Query(value ="SELECT COUNT(*) FROM follow WHERE to_user = :userId",nativeQuery = true)
     int customCountFollowers(int userId);
 
-    /* SELECT u.id,u.username FROM follow f INNER JOIN user u ON f.from_user = u.id WHERE f.to_user =:userId */
     @Query(value = "SELECT u.id,u.user_name FROM follow f INNER JOIN user u ON f.from_user = u.id WHERE f.to_user =:userId",nativeQuery = true)
     List<FollowInterface> findFollowersByToUserId(int userId);
 
