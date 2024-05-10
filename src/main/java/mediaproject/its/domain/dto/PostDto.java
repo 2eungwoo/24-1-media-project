@@ -4,7 +4,7 @@ package mediaproject.its.domain.dto;
 import lombok.*;
 import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.entity.PostFilteringCategory.*;
+import mediaproject.its.domain.entity.PostCategories.*;
 import mediaproject.its.domain.entity.User;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class PostDto {
         private HiringType hiringType;
         private PositionType positionType;
         private ProcessType processType;
-        private RecruitType recruitType;
+        private Recruiting_Type recruitingType;
         private TechStackType techStackType;
 
         // Dto -> Entity
@@ -38,7 +38,7 @@ public class PostDto {
                     .hiringType(hiringType)
                     .positionType(positionType)
                     .processType(processType)
-                    .recruitType(recruitType)
+                    .recruitingType(recruitingType)
                     .techStackType(techStackType)
                     .build();
         }
@@ -57,6 +57,11 @@ public class PostDto {
         private int viewCount;
         private int likesCount;
         private List<CommentDto.Response> comments = new ArrayList<>();
+        private HiringType hiringType;
+        private PositionType positionType;
+        private ProcessType processType;
+        private Recruiting_Type recruitingType;
+        private TechStackType techStackType;
 
         // Entity -> Dto
         public Response(Post post){
@@ -69,6 +74,11 @@ public class PostDto {
             this.comments = post.getComments().stream()
                     .map(CommentDto.Response::new)
                     .collect(Collectors.toList());
+            this.hiringType = post.getHiringType();
+            this.positionType = post.getPositionType();
+            this.processType = post.getProcessType();
+            this.recruitingType = post.getRecruitingType();
+            this.techStackType = post.getTechStackType();
         }
 
     }
@@ -83,6 +93,11 @@ public class PostDto {
         private String title;
         private Integer view_count;
         private Integer likes_count;
+        private String hiring_type;
+        private String position_type;
+        private String process_type;
+        private String recruiting_type;
+        private String techstack_type;
 
         // Entity -> Dto
         public InterfaceResponse(PostInterface postInterface){
@@ -90,6 +105,11 @@ public class PostDto {
             this.title = postInterface.getTitle();
             this.view_count = postInterface.getView_count();
             this.likes_count = postInterface.getLikes_count();
+            this.hiring_type = postInterface.getHiring_type();
+            this.position_type = postInterface.getPosition_type();
+            this.process_type = postInterface.getProcess_type();
+            this.recruiting_type = postInterface.getRecruiting_type();
+            this.techstack_type = postInterface.getTechstack_type();
         }
     }
 

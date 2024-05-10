@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mediaproject.its.domain.entity.PostFilteringCategory.*;
+import mediaproject.its.domain.entity.PostCategories.*;
 
 
 import java.time.LocalDateTime;
@@ -43,9 +43,9 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private HiringType hiringType;
 
-    @Column(name = "recurit_type", nullable = true)
+    @Column(name = "recuriting_type", nullable = true)
     @Enumerated(EnumType.STRING)
-    private RecruitType recruitType;
+    private Recruiting_Type recruitingType;
 
     @Column(name = "process_type", nullable = true)
     @Enumerated(EnumType.STRING)
@@ -79,7 +79,7 @@ public class Post {
                        HiringType hiringType,
                        PositionType positionType,
                        ProcessType processType,
-                       RecruitType recruitType,
+                       Recruiting_Type recruitingType,
                        TechStackType techStackType,
                        LocalDateTime updatedAt)
     {
@@ -88,7 +88,7 @@ public class Post {
         this.hiringType = hiringType;
         this.positionType = positionType;
         this.processType = processType;
-        this.recruitType = recruitType;
+        this.recruitingType = recruitingType;
         this.techStackType = techStackType;
         this.updatedAt = updatedAt;
     }

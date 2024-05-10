@@ -65,7 +65,7 @@ public class PostService {
                 .hiringType(postRequest.getHiringType())
                 .positionType(postRequest.getPositionType())
                 .processType(postRequest.getProcessType())
-                .recruitType(postRequest.getRecruitType())
+                .recruitingType(postRequest.getRecruitingType())
                 .techStackType(postRequest.getTechStackType())
                 .build();
 
@@ -94,7 +94,7 @@ public class PostService {
                 request.getHiringType(),
                 request.getPositionType(),
                 request.getProcessType(),
-                request.getRecruitType(),
+                request.getRecruitingType(),
                 request.getTechStackType(),
                 LocalDateTime.now());
         postRepository.save(post);

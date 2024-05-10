@@ -41,6 +41,11 @@ public class PostController {
                     .viewCount(p.getViewCount())
                     .likesCount(p.getLikesCount())
                     .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
+                    .hiringType(p.getHiringType())
+                    .positionType(p.getPositionType())
+                    .processType(p.getProcessType())
+                    .recruitingType(p.getRecruitingType())
+                    .techStackType(p.getTechStackType())
                     .build();
             postsResponseDto.add(postsDto);
         }
@@ -76,6 +81,11 @@ public class PostController {
                     .title(p.getTitle())
                     .view_count(p.getView_count())
                     .likes_count(p.getLikes_count())
+                    .hiring_type(p.getHiring_type())
+                    .position_type(p.getPosition_type())
+                    .process_type(p.getProcess_type())
+                    .recruiting_type(p.getRecruiting_type())
+                    .techstack_type(p.getTechstack_type())
                     .build();
             postsInterfaceResponseDto.add(postsDto);
         }
