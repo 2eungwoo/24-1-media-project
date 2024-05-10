@@ -52,7 +52,6 @@ public class PostService {
     }
 
 
-    // todo : 올바른 에러를 날려주는게 맞는지??... 세션만료 에러를 내야하나?
     @Transactional
     public Post postPost(PostDto.Request postRequest, String username){
 
@@ -63,6 +62,11 @@ public class PostService {
                 .content(postRequest.getContent())
                 .user(user)
                 .comments(postRequest.getComments())
+                .hiringType(postRequest.getHiringType())
+                .positionType(postRequest.getPositionType())
+                .processType(postRequest.getProcessType())
+                .recruitType(postRequest.getRecruitType())
+                .techStackType(postRequest.getTechStackType())
                 .build();
 
         Post newPost = postRequestDto.toEntity();
@@ -86,7 +90,13 @@ public class PostService {
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
         }
 
-        post.update(request.getTitle(),request.getContent(), LocalDateTime.now());
+        post.update(request.getTitle(),request.getContent(),
+                request.getHiringType(),
+                request.getPositionType(),
+                request.getProcessType(),
+                request.getRecruitType(),
+                request.getTechStackType(),
+                LocalDateTime.now());
         postRepository.save(post);
         return post;
     }

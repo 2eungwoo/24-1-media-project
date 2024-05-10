@@ -4,6 +4,7 @@ package mediaproject.its.domain.dto;
 import lombok.*;
 import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
+import mediaproject.its.domain.entity.PostFilteringCategory.*;
 import mediaproject.its.domain.entity.User;
 
 import java.util.ArrayList;
@@ -21,6 +22,11 @@ public class PostDto {
         private String content;
         private User user;
         private List<Comment> comments;
+        private HiringType hiringType;
+        private PositionType positionType;
+        private ProcessType processType;
+        private RecruitType recruitType;
+        private TechStackType techStackType;
 
         // Dto -> Entity
         public Post toEntity(){
@@ -29,6 +35,11 @@ public class PostDto {
                     .content(content)
                     .user(user)
                     .comments(new ArrayList<>())
+                    .hiringType(hiringType)
+                    .positionType(positionType)
+                    .processType(processType)
+                    .recruitType(recruitType)
+                    .techStackType(techStackType)
                     .build();
         }
     }

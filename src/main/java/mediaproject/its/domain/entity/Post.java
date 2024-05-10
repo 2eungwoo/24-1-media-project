@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import mediaproject.its.domain.entity.PostFilteringCategory.*;
 
 
 import java.time.LocalDateTime;
@@ -34,6 +35,26 @@ public class Post {
     @Column(name = "likes_count")
     private int likesCount;
 
+    @Column(name = "techstack_type", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private TechStackType techStackType;
+
+    @Column(name = "hiring_type", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private HiringType hiringType;
+
+    @Column(name = "recurit_type", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private RecruitType recruitType;
+
+    @Column(name = "process_type", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private ProcessType processType;
+
+    @Column(name = "position_type", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private PositionType positionType;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -54,9 +75,21 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(String title, String content, LocalDateTime updatedAt){
+    public void update(String title, String content,
+                       HiringType hiringType,
+                       PositionType positionType,
+                       ProcessType processType,
+                       RecruitType recruitType,
+                       TechStackType techStackType,
+                       LocalDateTime updatedAt)
+    {
         this.title = title;
         this.content = content;
+        this.hiringType = hiringType;
+        this.positionType = positionType;
+        this.processType = processType;
+        this.recruitType = recruitType;
+        this.techStackType = techStackType;
         this.updatedAt = updatedAt;
     }
 

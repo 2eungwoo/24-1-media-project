@@ -108,7 +108,6 @@ public class PostController {
                 .build();
     }
 
-    // todo : 게시글 작성 시 코멘트가 null이기 때문에, post작성 자체는 되지만 rest api error 발생. comment 초기값을 지정해주면 되나??
     @PostMapping("/its/api/post")
     public CommonResponseDto<?> postPost(@RequestBody PostDto.Request postRequest, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
