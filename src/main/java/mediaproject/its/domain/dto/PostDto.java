@@ -90,6 +90,7 @@ public class PostDto {
     @AllArgsConstructor
     public static class InterfaceResponse{
         private Integer postId;
+        private String username;
         private String title;
         private Integer view_count;
         private Integer likes_count;

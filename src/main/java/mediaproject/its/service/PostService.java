@@ -123,6 +123,7 @@ public class PostService {
     public List<PostInterface> findPostsLikedByUser(String username, int userId){
 
         userUtil.validUser(username);
+        userUtil.findUserById(userId);
 
         List<PostInterface> posts = likesRepository.findPostsLikedByUser(userId);
         return posts;

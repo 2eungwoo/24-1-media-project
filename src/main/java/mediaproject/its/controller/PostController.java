@@ -73,22 +73,7 @@ public class PostController {
     public CommonResponseDto<?> getPostsOrderedByViewCount(){
 
         List<PostInterface> posts = postService.getPostsOrderedByViewCount();
-        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = new ArrayList<>();
-
-        for (PostInterface p : posts) {
-            PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
-                    .postId(p.getId())
-                    .title(p.getTitle())
-                    .view_count(p.getView_count())
-                    .likes_count(p.getLikes_count())
-                    .hiring_type(p.getHiring_type())
-                    .position_type(p.getPosition_type())
-                    .process_type(p.getProcess_type())
-                    .recruiting_type(p.getRecruiting_type())
-                    .techstack_type(p.getTechstack_type())
-                    .build();
-            postsInterfaceResponseDto.add(postsDto);
-        }
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(posts);
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
                 .message("조회수 많은 순 포스트 조회 성공")
@@ -100,19 +85,10 @@ public class PostController {
     public CommonResponseDto<?> getPostsOrderedByLikesCount(){
 
         List<PostInterface> posts = postService.getPostsOrderedByLikesCount();
-        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = new ArrayList<>();
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(posts);
 
-        for (PostInterface p : posts) {
-            PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
-                    .postId(p.getId())
-                    .title(p.getTitle())
-                    .likes_count(p.getLikes_count())
-                    .view_count(p.getView_count())
-                    .build();
-            postsInterfaceResponseDto.add(postsDto);
-        }
         return CommonResponseDto.builder()
-                .statusCode(HttpStatus.CREATED)
+                .statusCode(HttpStatus.OK)
                 .message("좋아요 많은 순 포스트 조회 성공")
                 .data(postsInterfaceResponseDto)
                 .build();
@@ -171,19 +147,32 @@ public class PostController {
         String username = customUserDetails.getUser().getUsername();
         List<PostInterface> posts = postService.findPostsLikedByUser(username, userId);
 
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(posts);
+
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.CREATED)
+                .message("좋아요 등록 포스트 리스트 조회 성공")
+                .data(postsInterfaceResponseDto)
+                .build();
+    }
+
+    static List<PostDto.InterfaceResponse> extractPostInterfaceList(List<PostInterface> posts) {
         List<PostDto.InterfaceResponse> postsInterfaceResponseDto = new ArrayList<>();
 
         for (PostInterface p : posts) {
             PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
                     .postId(p.getId())
                     .title(p.getTitle())
+                    .view_count(p.getView_count())
+                    .likes_count(p.getLikes_count())
+                    .hiring_type(p.getHiring_type())
+                    .position_type(p.getPosition_type())
+                    .process_type(p.getProcess_type())
+                    .recruiting_type(p.getRecruiting_type())
+                    .techstack_type(p.getTechstack_type())
                     .build();
             postsInterfaceResponseDto.add(postsDto);
         }
-        return CommonResponseDto.builder()
-                .statusCode(HttpStatus.CREATED)
-                .message("좋아요 등록 포스트 리스트 조회 성공")
-                .data(postsInterfaceResponseDto)
-                .build();
+        return postsInterfaceResponseDto;
     }
 }
