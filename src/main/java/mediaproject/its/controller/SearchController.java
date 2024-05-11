@@ -3,6 +3,7 @@ package mediaproject.its.controller;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.CommentDto;
 import mediaproject.its.domain.dto.PostDto;
+import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.service.SearchService;
@@ -22,9 +23,14 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/its/search")
-    public CommonResponseDto<?> searcPostshWithTitle(@RequestParam String title){
+    public CommonResponseDto<?> searcPostshWithTitle(@RequestParam(required = false) String title,
+                                                     @RequestParam(required = false) String hiringType,
+                                                     @RequestParam(required = false) String positionType,
+                                                     @RequestParam(required = false) String processType,
+                                                     @RequestParam(required = false) String recruitingType,
+                                                     @RequestParam(required = false) String techStackType){
 
-        List<Post> posts = searchService.searchPostsWithTitle(title);
+        List<Post> posts = searchService.searchPostsWithTitle(title,hiringType,positionType,processType,recruitingType,techStackType);
         List<PostDto.Response> postsResponseDto = new ArrayList<>();
 
         for(Post p : posts){
@@ -48,6 +54,19 @@ public class SearchController {
                 .statusCode(HttpStatus.OK)
                 .message("검색 성공")
                 .data(postsResponseDto)
+                .build();
+    }
+
+    @GetMapping("/its/search-v2")
+    public CommonResponseDto<?> searcPostshWithTitle2(@RequestParam String title) {
+
+        List<PostInterface> posts = searchService.searchPostsWithTitleV2(title);
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = PostController.extractPostInterfaceList(posts);
+
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.OK)
+                .message("v2 검색 성공")
+                .data(postsInterfaceResponseDto)
                 .build();
     }
 

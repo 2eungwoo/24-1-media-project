@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SearchRepository extends PostRepository     {
 
-    @Query(value = "select p.* from post p where p.title =:title", nativeQuery = true)
+    @Query(value = "select p.* from post p where p.title =:title order by p.created_at desc", nativeQuery = true)
     List<PostInterface> findAllPostBySearch(String title);
 }

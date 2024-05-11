@@ -14,17 +14,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchService {
 
-//    private final SearchRepository searchRepository;
+    private final SearchRepository searchRepository;
     private final SearchRepositoryCustom searchRepositoryCustom;
 
-//    @Transactional(readOnly = true)
-//    public List<PostInterface> searchPostsWithTitle(String title){
-//        return searchRepository.findAllPostBySearch(title);
-//    }
+    @Transactional(readOnly = true)
+    public List<Post> searchPostsWithTitle(String title, String hiringType, String positionType, String processType, String recruitingType, String techStackType){
+        return searchRepositoryCustom.findByFiltering(title,hiringType,positionType,processType,recruitingType,techStackType);
+    }
 
     @Transactional(readOnly = true)
-    public List<Post> searchPostsWithTitle(String title){
-        return searchRepositoryCustom.findByTitle(title);
+    public List<PostInterface> searchPostsWithTitleV2(String title){
+        return searchRepository.findAllPostBySearch(title);
     }
 }
 

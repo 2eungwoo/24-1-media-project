@@ -36,24 +36,24 @@ public class Post {
     private int likesCount;
 
     @Column(name = "techstack_type", nullable = true)
-    @Enumerated(EnumType.STRING)
-    private TechStackType techStackType;
+    // @Enumerated(EnumType.STRING)
+    private String techStackType;
 
     @Column(name = "hiring_type", nullable = true)
-    @Enumerated(EnumType.STRING)
-    private HiringType hiringType;
+    // @Enumerated(EnumType.STRING)
+    private String hiringType;
 
     @Column(name = "recuriting_type", nullable = true)
-    @Enumerated(EnumType.STRING)
-    private Recruiting_Type recruitingType;
+    // @Enumerated(EnumType.STRING)
+    private String recruitingType;
 
     @Column(name = "process_type", nullable = true)
-    @Enumerated(EnumType.STRING)
-    private ProcessType processType;
+    // @Enumerated(EnumType.STRING)
+    private String processType;
 
     @Column(name = "position_type", nullable = true)
-    @Enumerated(EnumType.STRING)
-    private PositionType positionType;
+    // @Enumerated(EnumType.STRING)
+    private String positionType;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -76,11 +76,11 @@ public class Post {
     }
 
     public void update(String title, String content,
-                       HiringType hiringType,
-                       PositionType positionType,
-                       ProcessType processType,
-                       Recruiting_Type recruitingType,
-                       TechStackType techStackType,
+                       String hiringType,
+                       String positionType,
+                       String processType,
+                       String recruitingType,
+                       String techStackType,
                        LocalDateTime updatedAt)
     {
         this.title = title;

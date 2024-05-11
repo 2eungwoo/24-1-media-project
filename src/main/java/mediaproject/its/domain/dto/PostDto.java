@@ -22,11 +22,11 @@ public class PostDto {
         private String content;
         private User user;
         private List<Comment> comments;
-        private HiringType hiringType;
-        private PositionType positionType;
-        private ProcessType processType;
-        private Recruiting_Type recruitingType;
-        private TechStackType techStackType;
+        private String hiringType;
+        private String positionType;
+        private String processType;
+        private String recruitingType;
+        private String techStackType;
 
         // Dto -> Entity
         public Post toEntity(){
@@ -57,11 +57,11 @@ public class PostDto {
         private int viewCount;
         private int likesCount;
         private List<CommentDto.Response> comments = new ArrayList<>();
-        private HiringType hiringType;
-        private PositionType positionType;
-        private ProcessType processType;
-        private Recruiting_Type recruitingType;
-        private TechStackType techStackType;
+        private String hiringType;
+        private String positionType;
+        private String processType;
+        private String recruitingType;
+        private String techStackType;
 
         // Entity -> Dto
         public Response(Post post){
