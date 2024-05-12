@@ -7,6 +7,8 @@ import mediaproject.its.domain.dto.ProfileDto;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.PostRepository;
 import mediaproject.its.domain.repository.UserRepository;
+import mediaproject.its.response.error.UserErrorCode;
+import mediaproject.its.response.exception.CustomUnAuthorizedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,6 +43,7 @@ class UserProfileControllerTest {
     @BeforeEach
     public void loadUser(){
         User user = User.builder()
+                .id(999)
                 .username("tester")
                 .description("test description")
                 .email("email@naver.com")
@@ -61,7 +64,7 @@ class UserProfileControllerTest {
         final int userId = userRepository.findByUsername("tester").getId();
 
         final String url = "/its/api/profile/" + userId;
-        ProfileDto.Response profileDto = new ProfileDto.Response("test description","email@naver.com");
+        ProfileDto.Response profileDto = new ProfileDto.Response("tester","test description","email@naver.com");
 
         // when
         final ResultActions result = mockMvc.perform(get(url)
@@ -70,6 +73,7 @@ class UserProfileControllerTest {
         // then
         result
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.username").value(profileDto.getUsername()))
                 .andExpect(jsonPath("$.data.description").value(profileDto.getDescription()))
                 .andExpect(jsonPath("$.data.email").isNotEmpty())
                 .andDo(print());
@@ -105,8 +109,10 @@ class UserProfileControllerTest {
         // then
         result
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.statusCode").value("OK"))
                 .andExpect(jsonPath("$.data.description").value("updated description"))
                 .andExpect(jsonPath("$.data.email").value("updated email"))
                 .andDo(print());
     }
+
 }
