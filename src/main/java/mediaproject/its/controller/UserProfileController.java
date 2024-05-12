@@ -17,6 +17,22 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
+    @GetMapping("/its/api/profile/my")
+    public CommonResponseDto<?> getMyProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String username = customUserDetails.getUser().getUsername();
+
+        User user = userProfileService.getMyProfileById(username);
+
+        ProfileDto.Response profileResponseDto = new ProfileDto.Response(user);
+
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.OK)
+                .data(profileResponseDto)
+                .message("마이 프로필 조회 성공")
+                .build();
+    }
+
+
     @GetMapping("/its/api/profile/{userId}")
     public CommonResponseDto<?> getProfileById(@PathVariable int userId){
         User user = userProfileService.getProfileById(userId);

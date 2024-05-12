@@ -28,10 +28,12 @@ public class ProfileDto {
     @Setter
     @NoArgsConstructor
     public static class Response{
+        private String username;
         private String description;
         private String email;
 
         public Response(User user){
+            this.username = user.getUsername();
             this.description = user.getDescription();
             this.email = user.getEmail();
         }

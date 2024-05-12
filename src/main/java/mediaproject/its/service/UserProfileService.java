@@ -22,6 +22,12 @@ public class UserProfileService {
         return userUtil.findUserById(userId);
     }
 
+    @Transactional(readOnly = true)
+    public User getMyProfileById(String username){
+
+        return userUtil.findUser(username);
+    }
+
     @Transactional
     public User updateProfile(int userId, String username, ProfileDto.Request profileRequestDto){
 

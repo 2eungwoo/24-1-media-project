@@ -87,7 +87,7 @@ public class LetterController {
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
-                .message("쪽지 삭제 성공")
+                .message("쪽지 휴지통 보내기 성공")
                 .data(letterResponseDto)
                 .build();
     }
