@@ -4,7 +4,6 @@ package mediaproject.its.domain.dto;
 import lombok.*;
 import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
-import mediaproject.its.domain.entity.PostCategories.*;
 import mediaproject.its.domain.entity.User;
 
 import java.util.ArrayList;
