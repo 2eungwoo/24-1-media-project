@@ -19,13 +19,14 @@ public class SearchRepositoryCustom {
 
     public List<Post> findByFiltering(String title, String hiringType, String positionType, String processType, String recruitingType, String techStackType){
         return jpaQueryFactory.selectFrom(post)
-                .where(title(title))
-                .where(hiringType(hiringType))
-                .where(positionType(positionType))
-                .where(processType(processType))
-                .where(recruitingType(recruitingType))
-                .where(techStackType(techStackType))
-                .orderBy(post.createdAt.desc())
+                .where(
+                        title(title),
+                        hiringType(hiringType),
+                        positionType(positionType),
+                        processType(processType),
+                        recruitingType(recruitingType),
+                        techStackType(techStackType)
+                )
                 .fetch();
     }
 
