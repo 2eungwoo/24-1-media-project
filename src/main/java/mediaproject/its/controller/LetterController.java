@@ -79,7 +79,7 @@ public class LetterController {
     }
 
     @PutMapping("/its/api/letter/{letterId}")
-    public CommonResponseDto<?> sofrDeleteLetter(@PathVariable int letterId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public CommonResponseDto<?> softDeleteLetter(@PathVariable int letterId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
         Letter letter = letterService.softDeleteLetter(letterId, username);
 

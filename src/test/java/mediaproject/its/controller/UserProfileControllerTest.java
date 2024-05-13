@@ -9,6 +9,7 @@ import mediaproject.its.domain.repository.PostRepository;
 import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomUnAuthorizedException;
+import mediaproject.its.service.UserProfileService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,14 +17,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,6 +47,9 @@ class UserProfileControllerTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserProfileService userProfileService;
 
     @BeforeEach
     public void loadUser(){
@@ -64,7 +75,7 @@ class UserProfileControllerTest {
         final int userId = userRepository.findByUsername("tester").getId();
 
         final String url = "/its/api/profile/" + userId;
-        ProfileDto.Response profileDto = new ProfileDto.Response("tester","test description","email@naver.com");
+        ProfileDto.Response profileDto = new ProfileDto.Response("tester","test description","test@naver.com");
 
         // when
         final ResultActions result = mockMvc.perform(get(url)
@@ -114,5 +125,4 @@ class UserProfileControllerTest {
                 .andExpect(jsonPath("$.data.email").value("updated email"))
                 .andDo(print());
     }
-
 }
