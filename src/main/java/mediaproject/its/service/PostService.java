@@ -14,6 +14,9 @@ import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomRestApiException;
 import mediaproject.its.response.exception.CustomUnAuthorizedException;
 import mediaproject.its.service.Util.UserUtil;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,15 +72,17 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "hotviewpost", key ="'hotviewpost_' + #postId")
     public List<PostDto.Response> getPostsOrderedByViewCount(){
         return postRepositoryCustom.findPostsByViewCount();
     }
 
+
     @Transactional(readOnly = true)
+    @Cacheable(value = "hotlikepost", key ="'hotlikepost_' + #postId")
     public List<PostDto.Response> getPostsOrderedByLikesCount(){
         return postRepositoryCustom.findPostsByLikewCount();
     }
-
 
     @Transactional
     public PostDto.Response postPost(PostDto.Request postRequest, String username){
@@ -127,6 +132,9 @@ public class PostService {
     }
 
     @Transactional
+    @CacheEvict(value = "post", key = "'post_' + #postId")
+    // todo : 핫게시글에 대해 key값 줘서 캐시 했는데, 그 중 하나가 삭제되면 삭제된 애도 캐시에서 지워야하니까 delete메소드에서도 캐시를 적용하려고 했음
+    // 근데 핫게시글 캐시는 리스트고, 얘는 단일삭제인데, 이렇게 하는게 맞나?? 아닌거같음
     public PostDto.Response deletePost(int postId,String username){
 
         Post post = postRepository.findById(postId)

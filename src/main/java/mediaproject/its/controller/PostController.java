@@ -8,6 +8,7 @@ import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.response.dto.CommonResponseDto;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.service.PostService;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -147,4 +148,11 @@ public class PostController {
         }
         return postsInterfaceResponseDto;
     }
+
+    @GetMapping("/clear-cache")
+    @CacheEvict("post")
+    public String clearCache(){
+        return "cache has been cleared";
+    }
+
 }

@@ -6,6 +6,7 @@ import mediaproject.its.domain.entity.Comment;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,7 +49,7 @@ public class PostDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Response{
+    public static class Response implements Serializable {
         private int postId;
         private String username;
         private String title;

@@ -7,6 +7,7 @@ import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 import org.springframework.cglib.core.Local;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class CommentDto {
@@ -32,7 +33,7 @@ public class CommentDto {
 
     @Getter
     @Setter
-    public static class Response{
+    public static class Response implements Serializable {
         private int commentId;
         private String content;
         private String username;

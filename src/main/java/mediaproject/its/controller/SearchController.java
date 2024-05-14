@@ -23,14 +23,14 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/its/search")
-    public CommonResponseDto<?> searcPostshWithTitle(@RequestParam(required = false) String title,
+    public CommonResponseDto<?> searcPostshWithFiltering(@RequestParam(required = false) String title,
                                                      @RequestParam(required = false) String hiringType,
                                                      @RequestParam(required = false) String positionType,
                                                      @RequestParam(required = false) String processType,
                                                      @RequestParam(required = false) String recruitingType,
                                                      @RequestParam(required = false) String techStackType){
 
-        List<PostDto.Response> postsResponseDto = searchService.searchPostsWithTitle(title,hiringType,positionType,processType,recruitingType,techStackType);
+        List<PostDto.Response> postsResponseDto = searchService.searchPostsWithFiltering(title,hiringType,positionType,processType,recruitingType,techStackType);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
