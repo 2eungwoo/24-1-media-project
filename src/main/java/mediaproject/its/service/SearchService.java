@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SearchService {
 
-    private final SearchRepository searchRepository;
     private final SearchRepositoryCustom searchRepositoryCustom;
 
     @Transactional(readOnly = true)
