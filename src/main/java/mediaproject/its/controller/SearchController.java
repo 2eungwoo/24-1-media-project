@@ -38,18 +38,4 @@ public class SearchController {
                 .data(postsResponseDto)
                 .build();
     }
-
-    @GetMapping("/its/search-v2")
-    public CommonResponseDto<?> searcPostshWithTitle2(@RequestParam String title) {
-
-        List<PostInterface> posts = searchService.searchPostsWithTitleV2(title);
-        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = PostController.extractPostInterfaceList(posts);
-
-        return CommonResponseDto.builder()
-                .statusCode(HttpStatus.OK)
-                .message("v2 검색 성공")
-                .data(postsInterfaceResponseDto)
-                .build();
-    }
-
 }

@@ -22,10 +22,5 @@ public class SearchService {
     public List<PostDto.Response> searchPostsWithTitle(String title, String hiringType, String positionType, String processType, String recruitingType, String techStackType){
         return searchRepositoryCustom.findByFiltering(title,hiringType,positionType,processType,recruitingType,techStackType);
     }
-
-    @Transactional(readOnly = true)
-    public List<PostInterface> searchPostsWithTitleV2(String title){
-        return searchRepository.findAllPostBySearch(title);
-    }
 }
 
