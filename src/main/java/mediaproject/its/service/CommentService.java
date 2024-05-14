@@ -26,7 +26,7 @@ public class CommentService {
     private final UserUtil userUtil;
 
     @Transactional
-    public Comment postComment(CommentDto.Request commentRequestDto, int postId, String username){
+    public CommentDto.Response postComment(CommentDto.Request commentRequestDto, int postId, String username){
 
         User user = userUtil.findUser(username);
 
@@ -41,11 +41,11 @@ public class CommentService {
         Comment newComment = commentRequestDto.toEntity();
         commentRepository.save(newComment);
 
-        return newComment;
+        return new CommentDto.Response(newComment);
     }
 
     @Transactional
-    public Comment updateComment(int commentId, CommentDto.Request commentRequestDto ,String username){
+    public CommentDto.Response updateComment(int commentId, CommentDto.Request commentRequestDto ,String username){
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
@@ -59,13 +59,14 @@ public class CommentService {
 
         comment.update(commentRequestDto.getContent(),LocalDateTime.now());
         commentRepository.save(comment);
-        return comment;
+
+        return new CommentDto.Response(comment);
 
     }
 
 
     @Transactional
-    public Comment deleteComment(int commentId, String username){
+    public CommentDto.Response deleteComment(int commentId, String username){
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
@@ -78,7 +79,7 @@ public class CommentService {
         }
 
         commentRepository.deleteById(commentId);
-        return comment;
+        return new CommentDto.Response(comment);
 
     }
 }

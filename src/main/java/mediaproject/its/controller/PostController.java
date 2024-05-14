@@ -24,31 +24,10 @@ public class PostController {
 
     // todo : List로 ResponseDto 형태로 어떻게 반환하지?
     // 해결! https://velog.io/@nyong_i/List%EB%A5%BC-Dto%EB%A1%9C-%EB%B0%98%ED%99%98%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95-RESTful-API
-
-    // todo : 설계원칙4에 따라 좋은 설계를 위한 절충이 필요하다?? (컨트롤러에서 일정량의 로직 넣은 것에 대하여. for 서비스단에서 Post타입 리턴 일관성 유지)
-    // todo : 생각해보고 수정하려면 해보자 그냥 서비스단에서 리턴타입을 변경하는 편이 그나마 더 나은 방법인가??
     @GetMapping("/its/posts")
     public CommonResponseDto<?> getPost(){
-        List<Post> posts = postService.getAllPost();
-        List<PostDto.Response> postsResponseDto = new ArrayList<>();
+        List<PostDto.Response> postsResponseDto = postService.getAllPost();
 
-        for(Post p : posts){
-            PostDto.Response postsDto = PostDto.Response.builder()
-                    .postId(p.getId())
-                    .title(p.getTitle())
-                    .content(p.getContent())
-                    .username(p.getUser().getUsername())
-                    .viewCount(p.getViewCount())
-                    .likesCount(p.getLikesCount())
-                    .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
-                    .hiringType(p.getHiringType())
-                    .positionType(p.getPositionType())
-                    .processType(p.getProcessType())
-                    .recruitingType(p.getRecruitingType())
-                    .techStackType(p.getTechStackType())
-                    .build();
-            postsResponseDto.add(postsDto);
-        }
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("포스트 조회 성공")
@@ -59,8 +38,7 @@ public class PostController {
 
     @GetMapping("/its/post/{id}")
     public CommonResponseDto<?> getPostById(@PathVariable int id){
-        Post post = postService.getPostById(id);
-        PostDto.Response postResponseDto = new PostDto.Response(post);
+        PostDto.Response postResponseDto = postService.getPostById(id);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
@@ -72,25 +50,24 @@ public class PostController {
     @GetMapping("/its/posts/hot-view")
     public CommonResponseDto<?> getPostsOrderedByViewCount(){
 
-        List<PostInterface> posts = postService.getPostsOrderedByViewCount();
-        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(posts);
+        List<PostDto.Response> hotViewPostsDto = postService.getPostsOrderedByViewCount();
+
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
                 .message("조회수 많은 순 포스트 조회 성공")
-                .data(postsInterfaceResponseDto)
+                .data(hotViewPostsDto)
                 .build();
     }
 
     @GetMapping("/its/posts/hot-likes")
     public CommonResponseDto<?> getPostsOrderedByLikesCount(){
 
-        List<PostInterface> posts = postService.getPostsOrderedByLikesCount();
-        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(posts);
+        List<PostDto.Response> hotLikedPostsDto = postService.getPostsOrderedByLikesCount();
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("좋아요 많은 순 포스트 조회 성공")
-                .data(postsInterfaceResponseDto)
+                .data(hotLikedPostsDto)
                 .build();
     }
 
@@ -98,9 +75,7 @@ public class PostController {
     public CommonResponseDto<?> postPost(@RequestBody PostDto.Request postRequest, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
-        Post newPost = postService.postPost(postRequest,username);
-
-        PostDto.Response postResponseDto = new PostDto.Response(newPost);
+        PostDto.Response postResponseDto  = postService.postPost(postRequest,username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -113,9 +88,7 @@ public class PostController {
     public CommonResponseDto<?> updatePost(@PathVariable int postId, @RequestBody PostDto.Request updatePostRequestDto,@AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
-        Post updatedPost = postService.updatePost(postId, updatePostRequestDto, username);
-
-        PostDto.Response updatedPostResponseDto = new PostDto.Response(updatedPost);
+        PostDto.Response updatedPostResponseDto = postService.updatePost(postId, updatePostRequestDto, username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
@@ -129,14 +102,12 @@ public class PostController {
 
         String username = customUserDetails.getUser().getUsername();
 
-        Post deletedPost = postService.deletePost(postId,username);
-
-        PostDto.Response deletedPostDto = new PostDto.Response(deletedPost);
+        PostDto.Response deletedPostResponseDto = postService.deletePost(postId,username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("포스트 삭제 성공")
-                .data(deletedPostDto)
+                .data(deletedPostResponseDto)
                 .build();
     }
 
@@ -163,6 +134,7 @@ public class PostController {
             PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
                     .postId(p.getId())
                     .title(p.getTitle())
+                    .userName(p.getUser_name())
                     .view_count(p.getView_count())
                     .likes_count(p.getLikes_count())
                     .hiring_type(p.getHiring_type())

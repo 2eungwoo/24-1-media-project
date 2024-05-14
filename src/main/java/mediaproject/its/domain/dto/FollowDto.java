@@ -8,12 +8,6 @@ import mediaproject.its.domain.entity.Follow;
 
 public class FollowDto {
 
-    @Getter
-    public static class Followers{
-        private int userId;
-        private String username;
-    }
-
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor

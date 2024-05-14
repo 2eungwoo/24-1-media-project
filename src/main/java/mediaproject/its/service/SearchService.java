@@ -1,6 +1,7 @@
 package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
+import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.repository.SearchRepository;
@@ -18,7 +19,7 @@ public class SearchService {
     private final SearchRepositoryCustom searchRepositoryCustom;
 
     @Transactional(readOnly = true)
-    public List<Post> searchPostsWithTitle(String title, String hiringType, String positionType, String processType, String recruitingType, String techStackType){
+    public List<PostDto.Response> searchPostsWithTitle(String title, String hiringType, String positionType, String processType, String recruitingType, String techStackType){
         return searchRepositoryCustom.findByFiltering(title,hiringType,positionType,processType,recruitingType,techStackType);
     }
 

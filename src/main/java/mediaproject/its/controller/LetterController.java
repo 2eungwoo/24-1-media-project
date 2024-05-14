@@ -26,20 +26,7 @@ public class LetterController {
     @GetMapping("/its/api/letter")
     public CommonResponseDto<?> getLetterList(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        List<Letter> letters = letterService.getLetterList(username);
-        List<LetterDto.Response> lettersResponseDto = new ArrayList<>();
-
-        for(Letter l : letters){
-            LetterDto.Response lettersDto = LetterDto.Response.builder()
-                    .sender(l.getSender())
-                    .recipient(l.getRecipient())
-                    .content(l.getContent())
-                    .activeStatus(l.getActiveStatus())
-                    .readStatus(l.getReadStatus())
-                    .createdAt(l.getCreatedAt())
-                    .build();
-            lettersResponseDto.add(lettersDto);
-        }
+        List<LetterDto.Response> lettersResponseDto = letterService.getLetterList(username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
@@ -52,9 +39,7 @@ public class LetterController {
     @GetMapping("/its/api/letter/{letterId}")
     public CommonResponseDto<?> getLetterById(@PathVariable int letterId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        Letter letter = letterService.getLetterById(letterId,username);
-
-        LetterDto.Response letterResponseDto = new LetterDto.Response(letter);
+        LetterDto.Response letterResponseDto  = letterService.getLetterById(letterId,username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
@@ -67,9 +52,7 @@ public class LetterController {
     @PostMapping("/its/api/letter/{recipientId}")
     public CommonResponseDto<?> postLetter(@RequestBody LetterDto.Request letterRequest, @PathVariable int recipientId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        Letter letter = letterService.postLetter(letterRequest,recipientId,username);
-
-        LetterDto.Response letterResponseDto = new LetterDto.Response(letter);
+        LetterDto.Response letterResponseDto = letterService.postLetter(letterRequest,recipientId,username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -81,9 +64,7 @@ public class LetterController {
     @PutMapping("/its/api/letter/{letterId}")
     public CommonResponseDto<?> softDeleteLetter(@PathVariable int letterId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        Letter letter = letterService.softDeleteLetter(letterId, username);
-
-        LetterDto.Response letterResponseDto = new LetterDto.Response(letter);
+        LetterDto.Response letterResponseDto = letterService.softDeleteLetter(letterId, username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -95,9 +76,7 @@ public class LetterController {
     @DeleteMapping("/its/api/letter/{letterId}")
     public CommonResponseDto<?> deleteLetter(@PathVariable int letterId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        Letter letter = letterService.deleteLetter(letterId, username);
-
-        LetterDto.Response letterResponseDto = new LetterDto.Response(letter);
+        LetterDto.Response letterResponseDto = letterService.deleteLetter(letterId, username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -109,20 +88,7 @@ public class LetterController {
     @GetMapping("/its/api/letter/trashcan")
     public CommonResponseDto<?> getSoftDeletedLetterList(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        List<Letter> letters = letterService.getSoftDeletedLetterList(username);
-        List<LetterDto.Response> lettersResponseDto = new ArrayList<>();
-
-        for(Letter l : letters){
-            LetterDto.Response lettersDto = LetterDto.Response.builder()
-                    .sender(l.getSender())
-                    .recipient(l.getRecipient())
-                    .content(l.getContent())
-                    .activeStatus(l.getActiveStatus())
-                    .readStatus(l.getReadStatus())
-                    .createdAt(l.getCreatedAt())
-                    .build();
-            lettersResponseDto.add(lettersDto);
-        }
+        List<LetterDto.Response> lettersResponseDto = letterService.getSoftDeletedLetterList(username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)

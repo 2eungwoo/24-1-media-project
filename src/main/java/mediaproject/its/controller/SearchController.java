@@ -30,26 +30,8 @@ public class SearchController {
                                                      @RequestParam(required = false) String recruitingType,
                                                      @RequestParam(required = false) String techStackType){
 
-        List<Post> posts = searchService.searchPostsWithTitle(title,hiringType,positionType,processType,recruitingType,techStackType);
-        List<PostDto.Response> postsResponseDto = new ArrayList<>();
+        List<PostDto.Response> postsResponseDto = searchService.searchPostsWithTitle(title,hiringType,positionType,processType,recruitingType,techStackType);
 
-        for(Post p : posts){
-            PostDto.Response postsDto = PostDto.Response.builder()
-                    .postId(p.getId())
-                    .title(p.getTitle())
-                    .content(p.getContent())
-                    .username(p.getUser().getUsername())
-                    .viewCount(p.getViewCount())
-                    .likesCount(p.getLikesCount())
-                    .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
-                    .hiringType(p.getHiringType())
-                    .positionType(p.getPositionType())
-                    .processType(p.getProcessType())
-                    .recruitingType(p.getRecruitingType())
-                    .techStackType(p.getTechStackType())
-                    .build();
-            postsResponseDto.add(postsDto);
-        }
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("검색 성공")

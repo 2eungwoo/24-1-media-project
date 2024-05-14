@@ -23,9 +23,7 @@ public class CommentController {
     @PostMapping("/its/api/comment/{postId}")
     public CommonResponseDto<?> postComment(@RequestBody CommentDto.Request commentRequest, @PathVariable int postId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        Comment newComment = commentService.postComment(commentRequest, postId, username);
-
-        CommentDto.Response commentResponseDto = new CommentDto.Response(newComment);
+        CommentDto.Response commentResponseDto = commentService.postComment(commentRequest, postId, username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
@@ -40,9 +38,7 @@ public class CommentController {
                                            @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
-        Comment updatedComment = commentService.updateComment(commentId, commentRequestDto, username);
-
-        CommentDto.Response updatedCommentDto = new CommentDto.Response(updatedComment);
+        CommentDto.Response updatedCommentDto = commentService.updateComment(commentId, commentRequestDto, username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
@@ -56,9 +52,7 @@ public class CommentController {
     public CommonResponseDto<?> deleteComment(@PathVariable int commentId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
-        Comment comment = commentService.deleteComment(commentId, username);
-
-        CommentDto.Response deletedComment = new CommentDto.Response(comment);
+        CommentDto.Response deletedComment = commentService.deleteComment(commentId, username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)

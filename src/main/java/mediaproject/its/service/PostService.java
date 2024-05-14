@@ -1,12 +1,14 @@
 package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
+import mediaproject.its.domain.dto.CommentDto;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.LikesRepository;
 import mediaproject.its.domain.repository.PostRepository;
+import mediaproject.its.domain.repository.PostRepositoryCustom;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomRestApiException;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,35 +29,58 @@ public class PostService {
     private final PostRepository postRepository;
     private final LikesRepository likesRepository;
     private final UserUtil userUtil;
+    private final PostRepositoryCustom postRepositoryCustom;
 
     @Transactional(readOnly = true)
-    public List<Post> getAllPost(){
-        return postRepository.findAll();
+    public List<PostDto.Response> getAllPost(){
+
+        List<Post> posts = postRepository.findAll();
+        List<PostDto.Response> postsResponseDto = new ArrayList<>();
+
+        for(Post p : posts) {
+            PostDto.Response postsDto = PostDto.Response.builder()
+                    .postId(p.getId())
+                    .title(p.getTitle())
+                    .content(p.getContent())
+                    .username(p.getUser().getUsername())
+                    .viewCount(p.getViewCount())
+                    .likesCount(p.getLikesCount())
+                    .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
+                    .hiringType(p.getHiringType())
+                    .positionType(p.getPositionType())
+                    .processType(p.getProcessType())
+                    .recruitingType(p.getRecruitingType())
+                    .techStackType(p.getTechStackType())
+                    .build();
+            postsResponseDto.add(postsDto);
+        }
+
+        return postsResponseDto;
     }
 
     @Transactional
-    public Post getPostById(int postId){
+    public PostDto.Response getPostById(int postId){
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
         post.viewCountUp();
 
-        return post;
+        return new PostDto.Response(post);
     }
 
     @Transactional(readOnly = true)
-    public List<PostInterface> getPostsOrderedByViewCount(){
-        return postRepository.findHotPostsByViewCount();
+    public List<PostDto.Response> getPostsOrderedByViewCount(){
+        return postRepositoryCustom.findPostsByViewCount();
     }
 
     @Transactional(readOnly = true)
-    public List<PostInterface> getPostsOrderedByLikesCount(){
-        return postRepository.findHotPostsByLikesCount();
+    public List<PostDto.Response> getPostsOrderedByLikesCount(){
+        return postRepositoryCustom.findPostsByLikewCount();
     }
 
 
     @Transactional
-    public Post postPost(PostDto.Request postRequest, String username){
+    public PostDto.Response postPost(PostDto.Request postRequest, String username){
 
         User user = userUtil.findUser(username);
 
@@ -70,16 +97,13 @@ public class PostService {
                 .build();
 
         Post newPost = postRequestDto.toEntity();
-
         postRepository.save(newPost);
-        return newPost;
+
+        return new PostDto.Response(newPost);
     }
 
-    // todo : entity에 직접 set 하지 않게 어떻게하지? -> Post 엔티티 내에서 update 메소드 구현하면 되나?
-    // todo : todo 해결, 그러나 피드백 필요
-    // todo : 올바른 에러를 날려주는게 맞는지??... 세션만료 에러를 내야하나?
     @Transactional
-    public Post updatePost(int postId, PostDto.Request request, String username){
+    public PostDto.Response updatePost(int postId, PostDto.Request request, String username){
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
@@ -98,11 +122,12 @@ public class PostService {
                 request.getTechStackType(),
                 LocalDateTime.now());
         postRepository.save(post);
-        return post;
+
+        return new PostDto.Response(post);
     }
 
     @Transactional
-    public Post deletePost(int postId,String username){
+    public PostDto.Response deletePost(int postId,String username){
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
@@ -115,7 +140,8 @@ public class PostService {
         }
 
         postRepository.deleteById(postId);
-        return post;
+
+        return new PostDto.Response(post);
     }
 
 

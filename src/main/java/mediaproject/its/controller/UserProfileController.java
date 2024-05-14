@@ -21,13 +21,11 @@ public class UserProfileController {
     public CommonResponseDto<?> getMyProfile(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
 
-        User user = userProfileService.getMyProfileById(username);
-
-        ProfileDto.Response profileResponseDto = new ProfileDto.Response(user);
+        ProfileDto.Response userProfileResponseDto = userProfileService.getMyProfileById(username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
-                .data(profileResponseDto)
+                .data(userProfileResponseDto)
                 .message("마이 프로필 조회 성공")
                 .build();
     }
@@ -35,13 +33,11 @@ public class UserProfileController {
 
     @GetMapping("/its/api/profile/{userId}")
     public CommonResponseDto<?> getProfileById(@PathVariable int userId){
-        User user = userProfileService.getProfileById(userId);
-
-        ProfileDto.Response userResponseDto = new ProfileDto.Response(user);
+        ProfileDto.Response userProfileResponseDto  = userProfileService.getProfileById(userId);
 
         return CommonResponseDto.builder()
                         .statusCode(HttpStatus.OK)
-                        .data(userResponseDto)
+                        .data(userProfileResponseDto)
                         .message("유저 프로필 조회 성공")
                 .build();
     }
@@ -53,14 +49,12 @@ public class UserProfileController {
 
         String username = customUserDetails.getUser().getUsername();
 
-        User updatedUser = userProfileService.updateProfile(userId,username,profileRequestDto);
-
-        ProfileDto.Response userResponseDto = new ProfileDto.Response(updatedUser);
+        ProfileDto.Response updatedUserProfileResponseDto = userProfileService.updateProfile(userId,username,profileRequestDto);
 
         return CommonResponseDto.builder()
                         .statusCode(HttpStatus.OK)
                         .message("유저 프로필 수정 성공")
-                        .data(userResponseDto)
+                        .data(updatedUserProfileResponseDto)
                 .build();
 
     }

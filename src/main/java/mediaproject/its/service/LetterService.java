@@ -3,6 +3,7 @@ package mediaproject.its.service;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.LetterDto;
 import mediaproject.its.domain.dto.PostDto;
+import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.Letter;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.User;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static mediaproject.its.domain.entity.QLetter.letter;
@@ -31,21 +33,38 @@ public class LetterService {
     private final LetterRepositoryCustom letterRepositoryCustom;
 
     @Transactional(readOnly = true)
-    public List<Letter> getLetterList(String username){
+    public List<LetterDto.Response> getLetterList(String username){
         userUtil.findUser(username);
 
         List<Letter> letters = letterRepositoryCustom.findAllLetters(username);
+        List<LetterDto.Response> letterResponseDto = new ArrayList<>();
+
+        for(Letter l : letters){
+            LetterDto.Response lettersDto = LetterDto.Response.builder()
+                    .content(l.getContent())
+                    .activeStatus(l.getActiveStatus())
+                    .letterId(l.getId())
+                    .createdAt(l.getCreatedAt())
+                    .recipient(l.getRecipient())
+                    .sender(l.getSender())
+                    .readStatus(l.getReadStatus())
+                    .build();
+
+            letterResponseDto.add(lettersDto);
+        }
+
+
 //        if(letters.get(0) != null){
 //            if(!letters.get(0).getRecipient().equals(username)){
 //                throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
 //            }
 //        }
 
-        return letters;
+        return letterResponseDto;
     }
 
     @Transactional
-    public Letter getLetterById(int letterId, String username){
+    public LetterDto.Response getLetterById(int letterId, String username){
         String recipientName = userUtil.findUser(username).getUsername();
 
         Letter letter = letterRepository.findById(letterId)
@@ -58,23 +77,38 @@ public class LetterService {
         letter.readLetter();
         letterRepository.save(letter);
 
-        return letter;
+        return new LetterDto.Response(letter);
     }
 
     @Transactional(readOnly = true)
-    public List<Letter> getSoftDeletedLetterList(String username){
+    public List<LetterDto.Response> getSoftDeletedLetterList(String username){
         userUtil.findUser(username);
 
         List<Letter> letters = letterRepositoryCustom.findTrashcanLetters(username);
+        List<LetterDto.Response> letterResponseDto = new ArrayList<>();
+
+        for(Letter l : letters){
+            LetterDto.Response lettersDto = LetterDto.Response.builder()
+                    .content(l.getContent())
+                    .activeStatus(l.getActiveStatus())
+                    .letterId(l.getId())
+                    .createdAt(l.getCreatedAt())
+                    .recipient(l.getRecipient())
+                    .sender(l.getSender())
+                    .readStatus(l.getReadStatus())
+                    .build();
+
+            letterResponseDto.add(lettersDto);
+        }
 //        if(!letters.get(0).getRecipient().equals(username)){
 //            throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
 //        }
 
-        return letters;
+        return letterResponseDto;
     }
 
     @Transactional
-    public Letter postLetter(LetterDto.Request letterRequest, int recipientId, String username){
+    public LetterDto.Response postLetter(LetterDto.Request letterRequest, int recipientId, String username){
         User sender = userUtil.findUser(username);
         User recipient = userUtil.findUserById(recipientId);
 
@@ -93,11 +127,11 @@ public class LetterService {
         Letter newLetter = letterRequestDto.toEntity();
 
         letterRepository.save(newLetter);
-        return newLetter;
+        return new LetterDto.Response(newLetter);
     }
 
     @Transactional
-    public Letter softDeleteLetter(int letterId, String username){
+    public LetterDto.Response softDeleteLetter(int letterId, String username){
         String recipientName = userUtil.findUser(username).getUsername();
 
         Letter letter = letterRepository.findById(letterId)
@@ -110,11 +144,11 @@ public class LetterService {
         letter.softDelete();
         letterRepository.save(letter);
 
-        return letter;
+        return new LetterDto.Response(letter);
     }
 
     @Transactional
-    public Letter deleteLetter(int letterId, String username){
+    public LetterDto.Response deleteLetter(int letterId, String username){
         String recipientName = userUtil.findUser(username).getUsername();
 
         Letter letter = letterRepository.findById(letterId)
@@ -126,6 +160,6 @@ public class LetterService {
 
         letterRepository.deleteById(letterId);
 
-        return letter;
+        return new LetterDto.Response(letter);
     }
 }

@@ -3,6 +3,7 @@ package mediaproject.its.domain.dto;
 public interface PostInterface {
     Integer getId();
     String getTitle();
+    String getUser_name();
     Integer getView_count();
     Integer getLikes_count();
     String getHiring_type();

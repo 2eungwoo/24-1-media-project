@@ -18,18 +18,19 @@ public class UserProfileService {
     private final UserUtil userUtil;
 
     @Transactional(readOnly = true)
-    public User getProfileById(int userId){
-        return userUtil.findUserById(userId);
+    public ProfileDto.Response getProfileById(int userId){
+        User user = userUtil.findUserById(userId);
+        return new ProfileDto.Response(user);
     }
 
     @Transactional(readOnly = true)
-    public User getMyProfileById(String username){
-
-        return userUtil.findUser(username);
+    public ProfileDto.Response getMyProfileById(String username){
+        User user = userUtil.findUser(username);
+        return new ProfileDto.Response(user);
     }
 
     @Transactional
-    public User updateProfile(int userId, String username, ProfileDto.Request profileRequestDto){
+    public ProfileDto.Response updateProfile(int userId, String username, ProfileDto.Request profileRequestDto){
 
         User user = userUtil.findUserById(userId);
         User targetUser = userUtil.findUser(username);
@@ -41,7 +42,7 @@ public class UserProfileService {
         user.updateProfile(profileRequestDto.getDescription(), profileRequestDto.getEmail());
         userRepository.save(user);
 
-        return user;
+        return new ProfileDto.Response(user);
     }
 
 }
