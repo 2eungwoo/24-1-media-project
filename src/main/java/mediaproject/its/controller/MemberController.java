@@ -18,18 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberHardDeleteSchedular memberHardDeleteSchedular;
 
-    @PutMapping("/its/api/withdrawl")
-    public CommonResponseDto<?> memberWithdrawl(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+    @PutMapping("/its/api/inactive")
+    public CommonResponseDto<?> memberInactive(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
-        WithdrawlDto.Response softDeletedMember = memberService.withdrawl(username);
-
-        memberHardDeleteSchedular.memberHardDelete();
+        WithdrawlDto.Response softDeletedMember = memberService.inactive(username);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
-                .message("유저 회원 탈퇴 성공")
+                .message("유저 회원 비활성화 성공")
                 .data(softDeletedMember)
                 .build();
     }
@@ -42,8 +39,21 @@ public class MemberController {
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
-                .message("유저 기간 내 재가입 성공")
+                .message("유저 재활성화 성공")
                 .data(rejoinUserDto)
+                .build();
+    }
+
+
+    @PutMapping("/its/api/withdrawl")
+    public CommonResponseDto<?> memberWithdrawl(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String username = customUserDetails.getUser().getUsername();
+        WithdrawlDto.Response deletedMemberDto = memberService.deleteMember(username);
+
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.OK)
+                .message("유저 영구 탈퇴 성공")
+                .data(deletedMemberDto)
                 .build();
     }
 }

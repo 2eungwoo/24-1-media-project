@@ -8,6 +8,7 @@ import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomIllegalArgumentException;
 import mediaproject.its.response.exception.CustomUnAuthorizedException;
 import mediaproject.its.service.Util.UserUtil;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,9 +18,10 @@ public class MemberService {
 
     private final UserUtil userUtil;
     private final UserRepository userRepository;
+    private final MemberHardDeleteSchedular memberHardDeleteSchedular;
 
     @Transactional
-    public WithdrawlDto.Response withdrawl(String username){
+    public WithdrawlDto.Response inactive(String username){
         User user = userUtil.findUser(username);
         int userId = user.getId();
         User us = userUtil.findUserById(userId);
@@ -30,6 +32,7 @@ public class MemberService {
 
         user.updateActiveStatus();
         User softDeletedMember = userRepository.save(user);
+
         return new WithdrawlDto.Response(softDeletedMember);
 
     }
@@ -45,5 +48,20 @@ public class MemberService {
         User rejoinUserDto = userRepository.save(user);
         return new WithdrawlDto.Response(rejoinUserDto);
     }
+
+
+    @Transactional
+    public WithdrawlDto.Response deleteMember(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
+        }
+
+        memberHardDeleteSchedular.memberHardDelete();
+
+         WithdrawlDto.Response deletedMemberDto = new WithdrawlDto.Response(user);
+         return deletedMemberDto;
+    }
+
 
 }

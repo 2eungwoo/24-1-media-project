@@ -27,11 +27,11 @@ public class Follow {
     private int id;
 
     @JoinColumn(name = "from_user")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private User fromUser;
 
     @JoinColumn(name = "to_user")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private User toUser;
 
 }

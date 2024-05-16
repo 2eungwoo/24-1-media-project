@@ -17,4 +17,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "select * from user where active_status =:activeStatus",nativeQuery = true)
     List<User> findMembersByActiveStatus(Boolean activeStatus);
+
+    @Query(value = "select * from user where active_status =:activeStatus",nativeQuery = true)
+    User findMemberByActiveStatus(Boolean activeStatus);
+
 }
