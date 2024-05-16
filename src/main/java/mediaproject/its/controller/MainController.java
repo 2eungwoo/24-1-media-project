@@ -1,6 +1,5 @@
 package mediaproject.its.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +10,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 @RestController
-@RequiredArgsConstructor
 public class MainController {
 
     @GetMapping("/main")
@@ -27,7 +25,5 @@ public class MainController {
         String userRole = auth.getAuthority();
 
         return "main controller" + userName + userRole;
-
     }
-
 }

@@ -1,11 +1,14 @@
 package mediaproject.its.service.Util;
 
 import lombok.RequiredArgsConstructor;
+import mediaproject.its.auth.CustomUserDetails;
 import mediaproject.its.domain.entity.User;
 import mediaproject.its.domain.repository.UserRepository;
 import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomIllegalArgumentException;
 import mediaproject.its.response.exception.CustomUnAuthorizedException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -45,4 +48,14 @@ public class UserUtil {
         }
         return user;
     }
+
+    public User getCurrentUser(String username){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails){
+            return (User) principal;
+        } else{
+            return null;
+        }
+    }
+
 }

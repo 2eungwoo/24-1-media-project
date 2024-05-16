@@ -27,6 +27,7 @@ public class MemberHardDeleteSchedular {
     @Transactional
     public void memberHardDelete(){
         log.info("method called");
+//        todo : 딜레이시간 적용되게끔 fix 필요
 //        List<User> users = userRepository.findMembersByActiveStatus(false);
 //        if(users.isEmpty()){
 //            return;
