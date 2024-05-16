@@ -17,9 +17,9 @@ public class MemberHardDeleteSchedular {
 
     private final UserRepository userRepository;
 
-    // 매달 마지막날 22시에 실행
-    // @Scheduled(cron = "0 0 22 L * ?")
-    @Scheduled(cron = "*/10 * * * * *")
+    // 매달 1일 0시 0분 0초부터 시작
+    // 초기 딜레이 : 1달(2592000초)
+    @Scheduled(cron = "0 0 0 1 * *", initialDelayString = "PT2592000S", zone = "Asia/Seoul")
     @Transactional
     public void memberHardDelete(){
 

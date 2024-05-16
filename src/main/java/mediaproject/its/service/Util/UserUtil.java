@@ -19,6 +19,9 @@ public class UserUtil {
         if(user == null){
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
         }
+        if(!user.getActiveStatus()){
+            throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,"탈퇴한 회원");
+        }
     }
 
 
@@ -27,6 +30,9 @@ public class UserUtil {
         if(user == null){
             throw new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR, UserErrorCode.USER_NOT_FOUND_ERROR.getMessage());
         }
+        if(!user.getActiveStatus()){
+            throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,"탈퇴한 회원");
+        }
 
         return user;
     }
@@ -34,7 +40,9 @@ public class UserUtil {
     public User findUserById(int userId){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomIllegalArgumentException(UserErrorCode.USER_NOT_FOUND_ERROR,UserErrorCode.USER_NOT_FOUND_ERROR.getMessage()));
-
+        if(!user.getActiveStatus()){
+            throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,"탈퇴한 회원");
+        }
         return user;
     }
 }

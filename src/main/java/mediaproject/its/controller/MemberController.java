@@ -29,8 +29,21 @@ public class MemberController {
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
-                .message("유저 회원 탈퇴 성공(soft deleted)")
+                .message("유저 회원 탈퇴 성공")
                 .data(softDeletedMember)
+                .build();
+    }
+
+    @PutMapping("/its/api/rejoin")
+    public CommonResponseDto<?> memberRejoin(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String username = customUserDetails.getUser().getUsername();
+        WithdrawlDto.Response rejoinUserDto = memberService.rejoinSoftDeletedUser(username);
+
+
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.OK)
+                .message("유저 기간 내 재가입 성공")
+                .data(rejoinUserDto)
                 .build();
     }
 }

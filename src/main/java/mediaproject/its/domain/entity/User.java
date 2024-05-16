@@ -40,6 +40,6 @@ public class User {
     }
 
     public void updateActiveStatus(){
-        this.activeStatus = false;
+        this.activeStatus = !activeStatus;
     }
 }
