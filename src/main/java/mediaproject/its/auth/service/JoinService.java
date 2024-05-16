@@ -33,6 +33,7 @@ public class JoinService {
                 .username(username)
                 .password(bCryptPasswordEncoder.encode(password))
                 .role("ROLE_USER")
+                .activeStatus(true)
                 .build();
 
         userRepository.save(newUser);
