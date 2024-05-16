@@ -31,8 +31,15 @@ public class User {
     @Column(name = "user_email")
     private String email;
 
+    @Column(name = "active_status")
+    private Boolean activeStatus;
+
     public void updateProfile(String description, String email){
         this.description = description;
         this.email = email;
+    }
+
+    public void updateActiveStatus(){
+        this.activeStatus = false;
     }
 }

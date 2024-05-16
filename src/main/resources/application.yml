@@ -5,6 +5,10 @@ spring:
     username: root
     password: zpzzgjdg@$^1
 
+  batch:
+    jdbc:
+      initialize-schema: never
+
   jpa:
     show-sql: true
     hibernate:
