@@ -45,7 +45,7 @@ public class MemberController {
     }
 
 
-    @PutMapping("/its/api/withdrawl")
+    @DeleteMapping("/its/api/withdrawl")
     public CommonResponseDto<?> memberWithdrawl(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
         WithdrawlDto.Response deletedMemberDto = memberService.deleteMember(username);
