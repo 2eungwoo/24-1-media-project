@@ -2,13 +2,13 @@ package mediaproject.its.service;
 
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.CommentDto;
+import mediaproject.its.domain.dto.PostContentDto;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.Post;
+import mediaproject.its.domain.entity.PostContent;
 import mediaproject.its.domain.entity.User;
-import mediaproject.its.domain.repository.LikesRepository;
-import mediaproject.its.domain.repository.PostRepository;
-import mediaproject.its.domain.repository.PostRepositoryCustom;
+import mediaproject.its.domain.repository.*;
 import mediaproject.its.response.error.CommonErrorCode;
 import mediaproject.its.response.error.UserErrorCode;
 import mediaproject.its.response.exception.CustomRestApiException;
@@ -33,6 +33,8 @@ public class PostService {
     private final LikesRepository likesRepository;
     private final UserUtil userUtil;
     private final PostRepositoryCustom postRepositoryCustom;
+    private final PostContentRepository postContentRepository;
+    private final PostContentRepositoryCustom postContentRepositoryCustom;
 
     @Transactional(readOnly = true)
     public List<PostDto.Response> getAllPost(){
@@ -44,7 +46,6 @@ public class PostService {
             PostDto.Response postsDto = PostDto.Response.builder()
                     .postId(p.getId())
                     .title(p.getTitle())
-                    .content(p.getContent())
                     .username(p.getUser().getUsername())
                     .viewCount(p.getViewCount())
                     .likesCount(p.getLikesCount())
@@ -64,13 +65,19 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto.Response getPostById(int postId){
+    public PostContentDto.Response getPostById(int postId){
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
+        PostContent postContent = postContentRepositoryCustom.findWithContent(postId);
+        if(postContent == null){
+            throw new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage());
+        }
+
         post.viewCountUp();
 
-        return new PostDto.Response(post);
+        return new PostContentDto.Response(postContent);
     }
 
     @Transactional(readOnly = true)
@@ -93,7 +100,6 @@ public class PostService {
 
         PostDto.Request postRequestDto = PostDto.Request.builder()
                 .title(postRequest.getTitle())
-                .content(postRequest.getContent())
                 .user(user)
                 .comments(postRequest.getComments())
                 .hiringType(postRequest.getHiringType())
@@ -103,8 +109,17 @@ public class PostService {
                 .techStackType(postRequest.getTechStackType())
                 .build();
 
+
         Post newPost = postRequestDto.toEntity();
         postRepository.save(newPost);
+
+        PostContentDto.Request postContentRequestDto = PostContentDto.Request.builder()
+                .postId(newPost.getId())
+                .content(postRequest.getContent())
+                .build();
+
+        PostContent newPostContent = postContentRequestDto.toEntity();
+        postContentRepository.save(newPostContent);
 
         return new PostDto.Response(newPost);
     }
@@ -114,6 +129,9 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
+        PostContent postContent = postContentRepository.findById(postId)
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
+
         User postAuthor = post.getUser();
         User user = userUtil.findUser(username);
 
@@ -121,13 +139,17 @@ public class PostService {
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
         }
 
-        post.update(request.getTitle(),request.getContent(),
+        post.update(request.getTitle(),
                 request.getHiringType(),
                 request.getPositionType(),
                 request.getProcessType(),
                 request.getRecruitingType(),
                 request.getTechStackType(),
                 LocalDateTime.now());
+
+        postContent.updateContent(request.getContent());
+
+        postContentRepository.save(postContent);
         postRepository.save(post);
 
         return new PostDto.Response(post);
@@ -142,6 +164,9 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
 
+        PostContent postContent = postContentRepository.findById(postId)
+                .orElseThrow(()-> new CustomRestApiException(CommonErrorCode.NOT_FOUND, CommonErrorCode.NOT_FOUND.getMessage()));
+
         User postAuthor = post.getUser();
         User user = userUtil.findUser(username);
 
@@ -150,6 +175,7 @@ public class PostService {
         }
 
         postRepository.deleteById(postId);
+        postContentRepository.deleteById(postId);
 
         return new PostDto.Response(post);
     }

@@ -58,7 +58,6 @@ public class PostRepositoryCustom {
         for(Post p : posts){
             PostDto.Response postsDto = PostDto.Response.builder()
                     .postId(p.getId())
-                    .content(p.getContent())
                     .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
                     .username(p.getUser().getUsername())
                     .title(p.getTitle())

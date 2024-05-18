@@ -35,9 +35,6 @@ public class Post {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "content")
-    private String content;
-
     @Column(name = "view_count")
     private int viewCount;
 
@@ -87,7 +84,7 @@ public class Post {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(String title, String content,
+    public void update(String title,
                        String hiringType,
                        String positionType,
                        String processType,
@@ -96,7 +93,6 @@ public class Post {
                        LocalDateTime updatedAt)
     {
         this.title = title;
-        this.content = content;
         this.hiringType = hiringType;
         this.positionType = positionType;
         this.processType = processType;

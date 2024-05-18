@@ -19,8 +19,8 @@ public class PostDto {
     @Setter
     public static class Request{
         private String title;
-        private String content;
         private User user;
+        private String content;
         private List<Comment> comments;
         private String hiringType;
         private String positionType;
@@ -32,7 +32,6 @@ public class PostDto {
         public Post toEntity(){
             return Post.builder()
                     .title(title)
-                    .content(content)
                     .user(user)
                     .comments(new ArrayList<>())
                     .hiringType(hiringType)
@@ -53,7 +52,6 @@ public class PostDto {
         private int postId;
         private String username;
         private String title;
-        private String content;
         private int viewCount;
         private int likesCount;
         private int commentCount;
@@ -69,7 +67,6 @@ public class PostDto {
             this.postId = post.getId();
             this.username = post.getUser().getUsername();
             this.title = post.getTitle();
-            this.content = post.getContent();
             this.viewCount = post.getViewCount();
             this.likesCount = post.getLikesCount();
             this.commentCount = post.getCommentCount();

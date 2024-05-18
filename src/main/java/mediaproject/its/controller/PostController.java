@@ -3,6 +3,7 @@ package mediaproject.its.controller;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.auth.CustomUserDetails;
 import mediaproject.its.domain.dto.CommentDto;
+import mediaproject.its.domain.dto.PostContentDto;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.response.dto.CommonResponseDto;
@@ -39,7 +40,7 @@ public class PostController {
 
     @GetMapping("/its/post/{id}")
     public CommonResponseDto<?> getPostById(@PathVariable int id){
-        PostDto.Response postResponseDto = postService.getPostById(id);
+        PostContentDto.Response postResponseDto = postService.getPostById(id);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
