@@ -48,6 +48,8 @@ public class PostService {
                     .username(p.getUser().getUsername())
                     .viewCount(p.getViewCount())
                     .likesCount(p.getLikesCount())
+                    .commentCount(p.getCommentCount())
+                    .commentCount(p.getCommentCount())
                     .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
                     .hiringType(p.getHiringType())
                     .positionType(p.getPositionType())

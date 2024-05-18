@@ -41,7 +41,9 @@ public class CommentService {
         commentRequestDto.setCommentId(commentRequestDto.getCommentId());
 
         Comment newComment = commentRequestDto.toEntity();
+        post.updateCommentCount(1);
         commentRepository.save(newComment);
+        postRepository.save(post);
 
         return new CommentDto.Response(newComment);
     }
@@ -81,6 +83,8 @@ public class CommentService {
         }
 
         commentRepository.deleteById(commentId);
+        comment.getPost().updateCommentCount(-1);
+        postRepository.save(comment.getPost());
         return new CommentDto.Response(comment);
 
     }

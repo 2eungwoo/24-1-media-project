@@ -31,11 +31,15 @@ public class ProfileDto {
         private String username;
         private String description;
         private String email;
+        private int followingsCount;
+        private int followersCount;
 
         public Response(User user){
             this.username = user.getUsername();
             this.description = user.getDescription();
             this.email = user.getEmail();
+            this.followingsCount = user.getFollowingsCount();
+            this.followersCount = user.getFollowersCount();
         }
     }
 

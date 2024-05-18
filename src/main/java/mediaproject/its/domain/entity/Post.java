@@ -35,6 +35,9 @@ public class Post {
     @Column(name = "likes_count")
     private int likesCount;
 
+    @Column(name = "comments_count")
+    private int commentCount;
+
     @Column(name = "techstack_type", nullable = true)
     // @Enumerated(EnumType.STRING)
     private String techStackType;
@@ -65,7 +68,7 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("createdAt asc")
     private List<Comment> comments = new ArrayList<>();
 
@@ -97,4 +100,7 @@ public class Post {
         this.viewCount += 1;
     }
     public void likesCountUp() { this.likesCount += 1; }
+    public void updateCommentCount(int num){
+        this.commentCount += num;
+    }
 }

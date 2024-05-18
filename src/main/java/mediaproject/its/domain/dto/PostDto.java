@@ -56,6 +56,7 @@ public class PostDto {
         private String content;
         private int viewCount;
         private int likesCount;
+        private int commentCount;
         private List<CommentDto.Response> comments = new ArrayList<>();
         private String hiringType;
         private String positionType;
@@ -71,6 +72,7 @@ public class PostDto {
             this.content = post.getContent();
             this.viewCount = post.getViewCount();
             this.likesCount = post.getLikesCount();
+            this.commentCount = post.getCommentCount();
             this.comments = post.getComments().stream()
                     .map(CommentDto.Response::new)
                     .collect(Collectors.toList());
@@ -94,6 +96,7 @@ public class PostDto {
         private String title;
         private Integer view_count;
         private Integer likes_count;
+        private Integer comment_count;
         private String hiring_type;
         private String position_type;
         private String process_type;
@@ -107,6 +110,7 @@ public class PostDto {
             this.title = postInterface.getTitle();
             this.view_count = postInterface.getView_count();
             this.likes_count = postInterface.getLikes_count();
+            this.comment_count = postInterface.getComment_count();
             this.hiring_type = postInterface.getHiring_type();
             this.position_type = postInterface.getPosition_type();
             this.process_type = postInterface.getProcess_type();

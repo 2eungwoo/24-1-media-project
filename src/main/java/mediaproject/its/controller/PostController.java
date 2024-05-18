@@ -138,6 +138,7 @@ public class PostController {
                     .userName(p.getUser_name())
                     .view_count(p.getView_count())
                     .likes_count(p.getLikes_count())
+                    .comment_count(p.getComment_count())
                     .hiring_type(p.getHiring_type())
                     .position_type(p.getPosition_type())
                     .process_type(p.getProcess_type())

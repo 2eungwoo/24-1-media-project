@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -31,6 +33,12 @@ public class User {
     @Column(name = "user_email")
     private String email;
 
+    @Column(name = "followers_count")
+    private int followersCount;
+
+    @Column(name = "followings_count")
+    private int followingsCount;
+
     @Column(name = "active_status")
     private Boolean activeStatus;
 
@@ -42,4 +50,6 @@ public class User {
     public void updateActiveStatus(){
         this.activeStatus = !activeStatus;
     }
+    public void updateFollowersCount(int num){this.followersCount += num; }
+    public void updateFollowingsCount(int num){this.followingsCount += num; }
 }

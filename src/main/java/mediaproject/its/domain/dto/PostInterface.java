@@ -6,6 +6,7 @@ public interface PostInterface {
     String getUser_name();
     Integer getView_count();
     Integer getLikes_count();
+    Integer getComment_count();
     String getHiring_type();
     String getPosition_type();
     String getProcess_type();
