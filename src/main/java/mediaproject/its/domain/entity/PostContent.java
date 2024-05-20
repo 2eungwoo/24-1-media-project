@@ -11,15 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-//@Table(indexes = {
-//        @Index(columnList = "post_id")
-//})
+@Table(indexes = {
+        @Index(columnList = "post_id")
+})
 public class PostContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "post_id")
+    @Column(name = "post_id", unique = true)
     private int postId;
 
     @Column(name = "content")
