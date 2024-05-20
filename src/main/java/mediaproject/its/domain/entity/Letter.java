@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
+@Table(indexes = {
+        @Index(name = "idx_recipient_created_at", columnList = "recipient_name,created_at DESC,active_status")
+})
 public class Letter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(indexes = {
-        @Index(columnList = "post_id")
+        @Index(name = "idx_post_id", columnList = "post_id")
 })
 public class PostContent {
     @Id
