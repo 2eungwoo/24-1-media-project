@@ -1,5 +1,6 @@
 package mediaproject.its.domain.repository;
 
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.CommentDto;
@@ -20,15 +21,34 @@ public class PostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     /*
-        select p.*
-        from post p
-        order by view_count desc
-        limit 10;
-     */
+    쿼리 개선 전.
+    select p.*
+    from post p
+    order by view_count desc
+    limit 10;
+    */
+    /*
+쿼리 개선 후
+(즉, WHERE-GROUP BY가 인덱스를 탄 상황에서 SELECT 절까지 인덱스를 타도록 하는 것입니다.)
+    select p1.*
+    from (
+            select post.*
+            from post
+            order by view_count desc
+            limit 10
+    ) p2 join post p1 on p2.id = p1.id
+    */
     public List<PostDto.Response> findPostsByViewCount(){
-        List<Post> posts = jpaQueryFactory.selectFrom(post)
+        // sub query
+        List<Post> top10Posts = jpaQueryFactory.selectFrom(post)
                 .orderBy(post.viewCount.desc())
                 .limit(10)
+                .fetch();
+
+        // main query
+        List<Post> posts = jpaQueryFactory.selectFrom(post)
+                .join(post)
+                .on(post.id.eq(Expressions.constant(top10Posts.get(0).getId()))) // 첫 번째 게시물과 조인
                 .fetch();
 
         return transformToDto(posts);
