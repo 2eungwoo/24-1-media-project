@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
+@Table(indexes = {
+        @Index(columnList = "post_id")
+})
 public class PostContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
