@@ -61,7 +61,7 @@ public class LetterController {
                 .build();
     }
 
-    @PutMapping("/its/api/letter/{letterId}")
+    @PatchMapping("/its/api/letter/{letterId}")
     public CommonResponseDto<?> softDeleteLetter(@PathVariable int letterId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
         LetterDto.Response letterResponseDto = letterService.softDeleteLetter(letterId, username);

@@ -29,4 +29,8 @@ public interface FollowRepository extends JpaRepository<Follow,Integer> {
     @Query(value = "SELECT u.id,u.user_name FROM follow f INNER JOIN user u ON f.from_user = u.id WHERE f.to_user =:userId",nativeQuery = true)
     List<FollowInterface> findFollowersByToUserId(int userId);
 
+    @Modifying
+    @Query(value = "DELETE FROM follow WHERE from_user =:inactiveUserId OR to_user =:inactiveUserId",nativeQuery = true)
+    void deleteUserByInactiveUser(int inactiveUserId);
+
 }

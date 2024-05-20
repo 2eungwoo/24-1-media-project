@@ -8,10 +8,7 @@ import mediaproject.its.service.MemberHardDeleteSchedular;
 import mediaproject.its.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +16,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PutMapping("/its/api/inactive")
+    @PatchMapping("/its/api/inactive")
     public CommonResponseDto<?> memberInactive(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
         WithdrawlDto.Response softDeletedMember = memberService.inactive(username);
@@ -31,7 +28,7 @@ public class MemberController {
                 .build();
     }
 
-    @PutMapping("/its/api/rejoin")
+    @PatchMapping("/its/api/rejoin")
     public CommonResponseDto<?> memberRejoin(@AuthenticationPrincipal CustomUserDetails customUserDetails){
         String username = customUserDetails.getUser().getUsername();
         WithdrawlDto.Response rejoinUserDto = memberService.rejoinSoftDeletedUser(username);
