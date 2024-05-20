@@ -39,7 +39,17 @@ public class UserProfileService {
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
         }
 
-        user.updateProfile(profileRequestDto.getDescription(), profileRequestDto.getEmail());
+        String newDescription = profileRequestDto.getDescription();
+        String newEmail = profileRequestDto.getEmail();
+
+        if(newDescription == null){
+            newDescription = user.getDescription();
+        }
+        if(newEmail == null){
+            newEmail = user.getEmail();
+        }
+
+        user.updateProfile(newDescription, newEmail);
         userRepository.save(user);
 
         return new ProfileDto.Response(user);

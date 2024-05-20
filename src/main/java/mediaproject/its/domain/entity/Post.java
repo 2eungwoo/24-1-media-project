@@ -24,7 +24,8 @@ import java.util.List;
         @Index(columnList = "recuriting_type"),
         @Index(columnList = "process_type"),
         @Index(columnList = "position_type"),
-        @Index(columnList = "view_count")
+        @Index(columnList = "view_count"),
+        @Index(columnList = "likes_count")
         // todo : view_count 인덱스는 모든 게시글 검색에서 index를 태워주기 위해서 쓴건데, 이런식으로 해도 되는걸까?
 })
 public class Post {

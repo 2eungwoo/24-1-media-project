@@ -42,7 +42,7 @@ public class UserProfileController {
                 .build();
     }
 
-    @PutMapping("/its/api/profile/{userId}")
+    @PatchMapping("/its/api/profile/{userId}")
     public CommonResponseDto<?> updatedProfile(@PathVariable int userId,
                                             @RequestBody ProfileDto.Request profileRequestDto,
                                             @AuthenticationPrincipal CustomUserDetails customUserDetails){

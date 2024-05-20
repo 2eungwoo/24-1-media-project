@@ -139,13 +139,41 @@ public class PostService {
             throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
         }
 
-        post.update(request.getTitle(),
-                request.getHiringType(),
-                request.getPositionType(),
-                request.getProcessType(),
-                request.getRecruitingType(),
-                request.getTechStackType(),
-                LocalDateTime.now());
+        String newTitle = request.getTitle();
+        String newHiringType = request.getHiringType();
+        String newPositionType = request.getPositionType();
+        String newProcessType = request.getProcessType();
+        String newRecruitingType = request.getRecruitingType();
+        String newTechStackType = request.getTechStackType();
+
+//        post.update(request.getTitle(),
+//                request.getHiringType(),
+//                request.getPositionType(),
+//                request.getProcessType(),
+//                request.getRecruitingType(),
+//                request.getTechStackType(),
+//                LocalDateTime.now());
+
+        if(request.getTitle() == null){
+            newTitle = post.getTitle();
+        }
+        if(request.getPositionType() == null){
+            newPositionType = post.getPositionType();
+        }
+        if(request.getProcessType() == null){
+            newProcessType = post.getProcessType();
+        }
+        if(request.getHiringType() == null){
+            newHiringType = post.getHiringType();
+        }
+        if(request.getRecruitingType() == null){
+            newRecruitingType = post.getRecruitingType();
+        }
+        if(request.getTechStackType() == null){
+            newTechStackType = post.getTechStackType();
+        }
+
+        post.update(newTitle,newHiringType,newPositionType,newProcessType,newRecruitingType,newTechStackType,LocalDateTime.now());
 
         postContent.updateContent(request.getContent());
 

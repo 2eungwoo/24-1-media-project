@@ -86,7 +86,7 @@ public class PostController {
                 .build();
     }
 
-    @PutMapping("/its/api/post/{postId}")
+    @PatchMapping("/its/api/post/{postId}")
     public CommonResponseDto<?> updatePost(@PathVariable int postId, @RequestBody PostDto.Request updatePostRequestDto,@AuthenticationPrincipal CustomUserDetails customUserDetails){
 
         String username = customUserDetails.getUser().getUsername();
