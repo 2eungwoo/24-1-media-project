@@ -39,7 +39,6 @@ public class PostRepositoryCustom {
         from post p
         order by likes_count desc
         limit 10;
-
      */
     public List<PostDto.Response> findPostsByLikewCount(){
         List<Post> posts = jpaQueryFactory.selectFrom(post)
