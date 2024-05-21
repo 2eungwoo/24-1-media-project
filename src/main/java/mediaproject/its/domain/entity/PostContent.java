@@ -19,7 +19,7 @@ public class PostContent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "post_id", unique = true)
+    @Column(name = "post_id")
     private int postId;
 
     @Column(name = "content")

@@ -37,29 +37,29 @@ public class PostService {
     private final PostContentRepositoryCustom postContentRepositoryCustom;
 
     @Transactional(readOnly = true)
-    public List<PostDto.Response> getAllPost(){
+    public List<PostInterface> getAllPost(){
 
-        List<Post> posts = postRepository.findAll();
-        List<PostDto.Response> postsResponseDto = new ArrayList<>();
-
-        for(Post p : posts) {
-            PostDto.Response postsDto = PostDto.Response.builder()
-                    .postId(p.getId())
-                    .title(p.getTitle())
-                    .username(p.getUser().getUsername())
-                    .viewCount(p.getViewCount())
-                    .likesCount(p.getLikesCount())
-                    .commentCount(p.getCommentCount())
-                    .commentCount(p.getCommentCount())
-                    .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
-                    .hiringType(p.getHiringType())
-                    .positionType(p.getPositionType())
-                    .processType(p.getProcessType())
-                    .recruitingType(p.getRecruitingType())
-                    .techStackType(p.getTechStackType())
-                    .build();
-            postsResponseDto.add(postsDto);
-        }
+        List<PostInterface> postsResponseDto = postRepository.findAllPostsOrderByLatest();
+        //List<PostDto.Response> postsResponseDto = new ArrayList<>();
+//
+//        for(Post p : posts) {
+//            PostDto.Response postsDto = PostDto.Response.builder()
+//                    .postId(p.getId())
+//                    .title(p.getTitle())
+//                    .username(p.getUser().getUsername())
+//                    .viewCount(p.getViewCount())
+//                    .likesCount(p.getLikesCount())
+//                    .commentCount(p.getCommentCount())
+//                    .commentCount(p.getCommentCount())
+//                    .comments(p.getComments().stream().map(CommentDto.Response::new).collect(Collectors.toList()))
+//                    .hiringType(p.getHiringType())
+//                    .positionType(p.getPositionType())
+//                    .processType(p.getProcessType())
+//                    .recruitingType(p.getRecruitingType())
+//                    .techStackType(p.getTechStackType())
+//                    .build();
+//            postsResponseDto.add(postsDto);
+//        }
 
         return postsResponseDto;
     }
@@ -82,15 +82,15 @@ public class PostService {
 
     @Transactional(readOnly = true)
     //@Cacheable(value = "hotviewpost", key ="'hotviewpost_' + #postId")
-    public List<PostDto.Response> getPostsOrderedByViewCount(){
-        return postRepositoryCustom.findPostsByViewCount();
+    public List<PostInterface> getPostsOrderedByViewCount(){
+        return postRepository.findPostsByViewCount();
     }
 
 
     @Transactional(readOnly = true)
     //@Cacheable(value = "hotlikepost", key ="'hotlikepost_' + #postId")
-    public List<PostDto.Response> getPostsOrderedByLikesCount(){
-        return postRepositoryCustom.findPostsByLikewCount();
+    public List<PostInterface> getPostsOrderedByLikesCount(){
+        return postRepository.findPostsByLikewCount();
     }
 
     @Transactional

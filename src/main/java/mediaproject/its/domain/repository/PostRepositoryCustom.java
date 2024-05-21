@@ -1,6 +1,7 @@
 package mediaproject.its.domain.repository;
 
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.CommentDto;
@@ -18,94 +19,72 @@ import static mediaproject.its.domain.entity.QPost.post;
 @RequiredArgsConstructor
 public class PostRepositoryCustom {
 
+    // todo : from절 서브쿼리 안되는데 어떡하지? 네이티브로 돌릴까?
     private final JPAQueryFactory jpaQueryFactory;
 
     /*
-    쿼리 개선 전.
-    select p.*
-    from post p
-    order by view_count desc
-    limit 10;
-    */
-    /*
-쿼리 개선 후
-(즉, ORDER BY가 인덱스를 탄 상황에서 SELECT 절까지 인덱스를 타도록 하는 것입니다.)
-    select p1.*
-    from (
-            select post.*
-            from post
-            order by view_count desc
-            limit 10
-    ) p2 join post p1 on p2.id = p1.id
-    */
-    public List<PostDto.Response> findPostsByViewCount(){
-        // sub query
-        List<Post> top10Posts = jpaQueryFactory.selectFrom(post)
-                .orderBy(post.viewCount.desc())
-                .limit(10)
-                .fetch();
+        select p1.*
+        from (
+                select post.id
+                from post
+                order by created_at desc
+              ) p2 join post p1 on p2.id = p1.id
 
-        // main query
-        List<Post> posts = jpaQueryFactory.selectFrom(post)
-                .join(post)
-                .on(post.id.eq(Expressions.constant(top10Posts.get(0).getId())))
+    */
+    public List<PostDto.Response> findAllPostsOrderByLatest(){
+        List<Post> posts = jpaQueryFactory
+                .selectFrom(post)
+                .where(post.id.in(
+                        JPAExpressions
+                                .select(post.id)
+                                .from(post)
+                                .orderBy(post.createdAt.desc())
+                ))
+                .fetch();
+        return transformToDto(posts);
+    }
+
+    /*
+     select p1.*
+     from (
+             select post.id
+             from post
+             order by view_count desc
+           ) p2 join post p1 on p2.id = p1.id
+
+ */
+    public List<PostDto.Response> findPostsByViewCount(){
+        List<Post> posts = jpaQueryFactory
+                .selectFrom(post)
+                .where(post.id.in(
+                        JPAExpressions.select(post.id)
+                                .from(post)
+                                .orderBy(post.viewCount.desc())
+                ))
                 .fetch();
 
         return transformToDto(posts);
     }
 
-    /* 개선 전 쿼리
-        select p.*
-        from post p
-        order by likes_count desc
-        limit 10;
-     */
-
     /*
+     select p1.*
+     from (
+             select post.id
+             from post
+             order by likes_count desc
+           ) p2 join post p1 on p2.id = p1.id
 
-    # 첫번쨰 쿼리 튜닝
-# index를 태워주기 위해 where절에 조건을 걸음
-select p.*
-from post p
-where p.likes_count>0
-order by likes_count desc
-limit 10;
-
-# 두번쨰 쿼리 튜닝
-# where-order by 절에 인덱스를 태운 상황에서, select에도 인덱스를 타게 함
-select p1.*
-from (
-         select post.id
-         from post
-         where post.view_count>0
-         order by view_count desc
-         limit 10
-     ) p2 join post p1 on p2.id = p1.id
-
-# 세번쨰 쿼리 튜닝
-# (이미 인덱스를 태워서 b tree로 써칭하므로?) where로 range scan 없애는게 더 빠름
-select p1.*
-from (
-         select post.id
-         from post
-         order by view_count desc
-         limit 10
-     ) p2 join post p1 on p2.id = p1.id
-
-
-     */
+ */
     public List<PostDto.Response> findPostsByLikewCount(){
-        // sub query
-        List<Post> top10Posts = jpaQueryFactory.selectFrom(post)
-                .orderBy(post.likesCount.desc())
-                .limit(10)
+        List<Post> posts = jpaQueryFactory
+                .selectFrom(post)
+                .where(post.id.in(
+                        JPAExpressions.select(post.id)
+                                .from(post)
+                                .orderBy(post.likesCount.desc())
+                ))
                 .fetch();
 
-        // main query
-        List<Post> posts = jpaQueryFactory.selectFrom(post)
-                .join(post)
-                .on(post.id.eq(Expressions.constant(top10Posts.get(0).getId())))
-                .fetch();
 
         return transformToDto(posts);
 

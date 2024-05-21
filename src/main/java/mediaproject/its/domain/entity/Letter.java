@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(indexes = {
-        @Index(name = "idx_recipient_created_at", columnList = "recipient_name,created_at DESC,active_status")
+        @Index(name = "idx_", columnList = "recipient_name,created_at DESC,read_status,active_status"),
 })
 public class Letter {
     @Id

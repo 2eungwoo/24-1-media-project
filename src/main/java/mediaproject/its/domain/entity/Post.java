@@ -19,13 +19,9 @@ import java.util.List;
 @Data
 @Entity
 @Table(indexes = {
-        // null인 애들도 있는데 이렇게하면 성능 개구림 - btree기반 인덱스서치에서 이렇게 컴포짓 인덱스 걸면 앞에를 기준으로 정렬하므로 앞에가 null이라면..
-//        @Index(columnList = "techstack_type,hiring_type"),
-//        @Index(columnList = "recuriting_type,process_type,position_type"),
-        // @Index(columnList = "view_count,likes_count"), 얘도, likes_count로만 쿼리하는 쿼리가 있는데 이렇게 한다면 성능이..
-        @Index(name = "idx_view_count", columnList = "view_count"),
-        @Index(name = "idx_likes_count", columnList = "likes_count")
-        // todo : view_count 인덱스는 모든 게시글 검색에서 index를 태워주기 위해서 쓴건데, 이런식으로 해도 되는걸까?
+        @Index(name = "idx_view_count", columnList = "view_count DESC"),
+        @Index(name = "idx_likes_count", columnList = "likes_count DESC"),
+        @Index(name = "idx_created_at", columnList = "created_at DESC")
 })
 public class Post {
     @Id
@@ -52,7 +48,7 @@ public class Post {
     // @Enumerated(EnumType.STRING)
     private String hiringType;
 
-    @Column(name = "recuriting_type", nullable = true)
+    @Column(name = "recruiting_type", nullable = true)
     // @Enumerated(EnumType.STRING)
     private String recruitingType;
 

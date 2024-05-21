@@ -89,11 +89,11 @@ public class PostDto {
     @AllArgsConstructor
     public static class InterfaceResponse{
         private Integer postId;
-        private String userName;
+        private String username;
         private String title;
         private Integer view_count;
         private Integer likes_count;
-        private Integer comment_count;
+        private Integer comments_count;
         private String hiring_type;
         private String position_type;
         private String process_type;
@@ -103,11 +103,11 @@ public class PostDto {
         // Entity -> Dto
         public InterfaceResponse(PostInterface postInterface){
             this.postId = postInterface.getId();
-            this.userName = postInterface.getUser_name();
+            this.username = postInterface.getUsername();
             this.title = postInterface.getTitle();
             this.view_count = postInterface.getView_count();
             this.likes_count = postInterface.getLikes_count();
-            this.comment_count = postInterface.getComment_count();
+            this.comments_count = postInterface.getComments_count();
             this.hiring_type = postInterface.getHiring_type();
             this.position_type = postInterface.getPosition_type();
             this.process_type = postInterface.getProcess_type();

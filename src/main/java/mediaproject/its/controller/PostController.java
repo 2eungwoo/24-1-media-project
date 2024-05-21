@@ -28,12 +28,14 @@ public class PostController {
     // 해결! https://velog.io/@nyong_i/List%EB%A5%BC-Dto%EB%A1%9C-%EB%B0%98%ED%99%98%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95-RESTful-API
     @GetMapping("/its/posts")
     public CommonResponseDto<?> getPost(){
-        List<PostDto.Response> postsResponseDto = postService.getAllPost();
+        List<PostInterface> posts = postService.getAllPost();
+
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(posts);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("포스트 조회 성공")
-                .data(postsResponseDto)
+                .data(postsInterfaceResponseDto)
                 .build();
 
     }
@@ -52,24 +54,26 @@ public class PostController {
     @GetMapping("/its/posts/hot-view")
     public CommonResponseDto<?> getPostsOrderedByViewCount(){
 
-        List<PostDto.Response> hotViewPostsDto = postService.getPostsOrderedByViewCount();
+        List<PostInterface> hotViewPostsDto = postService.getPostsOrderedByViewCount();
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(hotViewPostsDto);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.CREATED)
                 .message("조회수 많은 순 포스트 조회 성공")
-                .data(hotViewPostsDto)
+                .data(postsInterfaceResponseDto)
                 .build();
     }
 
     @GetMapping("/its/posts/hot-likes")
     public CommonResponseDto<?> getPostsOrderedByLikesCount(){
 
-        List<PostDto.Response> hotLikedPostsDto = postService.getPostsOrderedByLikesCount();
+        List<PostInterface> hotLikedPostsDto = postService.getPostsOrderedByLikesCount();
+        List<PostDto.InterfaceResponse> postsInterfaceResponseDto = extractPostInterfaceList(hotLikedPostsDto);
 
         return CommonResponseDto.builder()
                 .statusCode(HttpStatus.OK)
                 .message("좋아요 많은 순 포스트 조회 성공")
-                .data(hotLikedPostsDto)
+                .data(postsInterfaceResponseDto)
                 .build();
     }
 
@@ -136,10 +140,10 @@ public class PostController {
             PostDto.InterfaceResponse postsDto = PostDto.InterfaceResponse.builder()
                     .postId(p.getId())
                     .title(p.getTitle())
-                    .userName(p.getUser_name())
+                    .username(p.getUsername())
                     .view_count(p.getView_count())
                     .likes_count(p.getLikes_count())
-                    .comment_count(p.getComment_count())
+                    .comments_count(p.getComments_count())
                     .hiring_type(p.getHiring_type())
                     .position_type(p.getPosition_type())
                     .process_type(p.getProcess_type())
