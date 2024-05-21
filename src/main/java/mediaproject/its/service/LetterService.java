@@ -37,30 +37,29 @@ public class LetterService {
         userUtil.findUser(username);
 
         List<Letter> letters = letterRepositoryCustom.findAllLetters(username);
-        List<LetterDto.Response> letterResponseDto = new ArrayList<>();
-
-        for(Letter l : letters){
-            LetterDto.Response lettersDto = LetterDto.Response.builder()
-                    .content(l.getContent())
-                    .activeStatus(l.getActiveStatus())
-                    .letterId(l.getId())
-                    .createdAt(l.getCreatedAt())
-                    .recipient(l.getRecipient())
-                    .sender(l.getSender())
-                    .readStatus(l.getReadStatus())
-                    .build();
-
-            letterResponseDto.add(lettersDto);
-        }
-
-
 //        if(letters.get(0) != null){
 //            if(!letters.get(0).getRecipient().equals(username)){
 //                throw new CustomUnAuthorizedException(UserErrorCode.USER_UNAUTHORIZED,UserErrorCode.USER_UNAUTHORIZED.getMessage());
 //            }
 //        }
 
-        return letterResponseDto;
+        return convertLetterToDto(letters);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LetterDto.Response> getReadLetterList(String username){
+        userUtil.findUser(username);
+
+        List<Letter> letters = letterRepositoryCustom.findReadLetter(username);
+        return convertLetterToDto(letters);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LetterDto.Response> getUnReadLetterList(String username){
+        userUtil.findUser(username);
+
+        List<Letter> letters = letterRepositoryCustom.findUnReadLetter(username);
+        return convertLetterToDto(letters);
     }
 
     @Transactional
@@ -161,5 +160,25 @@ public class LetterService {
         letterRepository.deleteById(letterId);
 
         return new LetterDto.Response(letter);
+    }
+
+    public static List<LetterDto.Response> convertLetterToDto(List<Letter> letters){
+
+        List<LetterDto.Response> letterResponseDto = new ArrayList<>();
+
+        for(Letter l : letters){
+            LetterDto.Response lettersDto = LetterDto.Response.builder()
+                    .content(l.getContent())
+                    .activeStatus(l.getActiveStatus())
+                    .letterId(l.getId())
+                    .createdAt(l.getCreatedAt())
+                    .recipient(l.getRecipient())
+                    .sender(l.getSender())
+                    .readStatus(l.getReadStatus())
+                    .build();
+
+            letterResponseDto.add(lettersDto);
+        }
+        return letterResponseDto;
     }
 }

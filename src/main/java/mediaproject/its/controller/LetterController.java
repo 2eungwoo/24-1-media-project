@@ -35,6 +35,30 @@ public class LetterController {
                 .build();
     }
 
+    @GetMapping("/its/api/letter-read")
+    public CommonResponseDto<?> getReadLetterList(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String username = customUserDetails.getUser().getUsername();
+        List<LetterDto.Response> lettersResponseDto = letterService.getReadLetterList(username);
+
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.OK)
+                .message("읽은 쪽지 리스트 조회 성공")
+                .data(lettersResponseDto)
+                .build();
+    }
+
+    @GetMapping("/its/api/letter-unread")
+    public CommonResponseDto<?> getUnReadLetterList(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String username = customUserDetails.getUser().getUsername();
+        List<LetterDto.Response> lettersResponseDto = letterService.getUnReadLetterList(username);
+
+        return CommonResponseDto.builder()
+                .statusCode(HttpStatus.OK)
+                .message("안읽은 쪽지 리스트 조회 성공")
+                .data(lettersResponseDto)
+                .build();
+    }
+
     // 쪽지 단건 조회
     @GetMapping("/its/api/letter/{letterId}")
     public CommonResponseDto<?> getLetterById(@PathVariable int letterId, @AuthenticationPrincipal CustomUserDetails customUserDetails){
