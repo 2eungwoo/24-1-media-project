@@ -1,8 +1,8 @@
 package mediaproject.its.domain.repository;
 
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import lombok.RequiredArgsConstructor;
 import mediaproject.its.domain.dto.CommentDto;
 import mediaproject.its.domain.dto.PostDto;
@@ -31,18 +31,18 @@ public class PostRepositoryCustom {
               ) p2 join post p1 on p2.id = p1.id
 
     */
-    public List<PostDto.Response> findAllPostsOrderByLatest(){
-        List<Post> posts = jpaQueryFactory
-                .selectFrom(post)
-                .where(post.id.in(
-                        JPAExpressions
-                                .select(post.id)
-                                .from(post)
-                                .orderBy(post.createdAt.desc())
-                ))
-                .fetch();
-        return transformToDto(posts);
-    }
+//    public List<PostDto.Response> findAllPostsOrderByLatest(){
+//        QPost subPost = new QPost("subPost");
+//
+//        List<Post> posts = jpaQueryFactory.selectFrom(post)
+//                .from(
+//                        (EntityPath<?>) JPAExpressions.select(subPost.id)
+//                                .from(subPost)
+//                                .orderBy(subPost.createdAt.desc())
+//                ).innerJoin(post).on(post.id.eq(subPost.id));
+//
+//        return transformToDto(posts);
+//    }
 
     /*
      select p1.*

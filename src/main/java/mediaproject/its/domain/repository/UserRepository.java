@@ -16,7 +16,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "delete from user where active_status =:activeStatus",nativeQuery = true)
     void deleteMembersByActiveStatus(Boolean activeStatus);
 
-    @Query(value = "select * from user where active_status =:activeStatus",nativeQuery = true)
+    @Query(value = "select *\n" +
+            "from (\n" +
+            "        select user.id\n" +
+            "        from user\n" +
+            "        where active_status =:activeStatus\n" +
+            "     ) u2 join user u1 on u2.id=u1.id;",nativeQuery = true)
     List<User> findMembersByActiveStatus(Boolean activeStatus);
 
     @Query(value = "select * from user where active_status =:activeStatus",nativeQuery = true)

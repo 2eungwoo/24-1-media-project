@@ -3,6 +3,7 @@ package mediaproject.its.domain.repository;
 import mediaproject.its.domain.dto.PostDto;
 import mediaproject.its.domain.dto.PostInterface;
 import mediaproject.its.domain.entity.Post;
+import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

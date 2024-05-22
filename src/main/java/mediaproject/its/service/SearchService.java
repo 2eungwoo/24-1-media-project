@@ -19,7 +19,7 @@ public class SearchService {
     private final SearchRepositoryCustom searchRepositoryCustom;
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "search_posts", key = "'search_' + #title")
+//    @Cacheable(value = "search_posts", key = "'search_' + #title")
     public List<PostDto.Response> searchPostsWithFiltering(String title, String hiringType, String positionType, String processType, String recruitingType, String techStackType){
         return searchRepositoryCustom.findByFiltering(title,hiringType,positionType,processType,recruitingType,techStackType);
     }
