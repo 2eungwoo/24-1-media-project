@@ -20,14 +20,12 @@ public class PostContentRepositoryCustom {
     /*
         select pc.*
         from post_content pc
-            inner join post on p.id = pc.post_id
-        where p.id =:postId
+        where pc.id=:postId;
      */
 
     public PostContent findWithContent(int postId){
         return jpaQueryFactory.selectFrom(postContent)
-                .innerJoin(post).on(post.id.eq(postContent.postId))
-                .where(post.id.eq(postId))
+                .where(postContent.id.eq(postId))
                 .fetchOne();
     }
 

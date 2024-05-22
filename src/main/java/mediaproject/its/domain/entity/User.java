@@ -3,15 +3,14 @@ package mediaproject.its.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Getter
+@Table(indexes = {
+        @Index(name = "idx_id_active_status", columnList = "id,active_status")
+})
 public class User {
 
     @Id
