@@ -31,19 +31,6 @@ public class PostRepositoryCustom {
               ) p2 join post p1 on p2.id = p1.id
 
     */
-//    public List<PostDto.Response> findAllPostsOrderByLatest(){
-//        QPost subPost = new QPost("subPost");
-//
-//        List<Post> posts = jpaQueryFactory.selectFrom(post)
-//                .from(
-//                        (EntityPath<?>) JPAExpressions.select(subPost.id)
-//                                .from(subPost)
-//                                .orderBy(subPost.createdAt.desc())
-//                ).innerJoin(post).on(post.id.eq(subPost.id));
-//
-//        return transformToDto(posts);
-//    }
-
     /*
      select p1.*
      from (
