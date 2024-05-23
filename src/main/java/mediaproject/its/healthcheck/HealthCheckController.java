@@ -24,7 +24,6 @@ public class HealthCheckController {
     @Value("${serverName}")
     private String serverName;
 
-
     @GetMapping("/hc")
     public ResponseEntity<?> healthCheck(){
         Map<String, String> responseData = new TreeMap<>();
