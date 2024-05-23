@@ -36,9 +36,7 @@ jobs:
 
       # gradle build
       - name: Build with Gradle       
-        run: |
-          echo ${{secrets.APPLICATION_SECRET}} | base64 --decode > ./src/main/resources/application-secret.yml
-          ./gradlew clean build -x test            
+        run: ./gradlew clean build -x test            
         
       # docker login
       - name: Login to DockerHub
