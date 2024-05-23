@@ -1,6 +1,6 @@
 FROM openjdk:17-oracle
-ARG JAR_FILE=/build/libs/sejongmate-0.0.1-SNAPSHOT.jar
-
-COPY ${JAR_FILE} /sejongmate.jar
-
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod", "/sejongmate.jar"]
+ARG JAR_FILE=/build/libs/Its-0.0.1-SNAPSHOT.jar
+ARG PROFILES
+ARG ENV
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILES}", "-Dserver.env=${ENV}", "-jar", "app.jar"]
