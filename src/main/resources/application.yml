@@ -43,6 +43,7 @@ server:
 
 serverName: green_server
 ---
+
 spring:
 
   batch:
