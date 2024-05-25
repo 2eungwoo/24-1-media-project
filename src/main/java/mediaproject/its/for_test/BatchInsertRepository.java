@@ -20,6 +20,7 @@ public class BatchInsertRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+
     @Transactional
     public void saveAllUsers(List<User> users) {
         String query = "INSERT INTO user (user_name, password, role, user_description, user_email, followers_count, followings_count, active_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
