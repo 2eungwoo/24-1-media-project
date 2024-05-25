@@ -46,7 +46,7 @@ public class Post {
     // @Enumerated(EnumType.STRING)
     private String hiringType;
 
-    @Column(name = "recuriting_type", nullable = true)
+    @Column(name = "recruiting_type", nullable = true)
     // @Enumerated(EnumType.STRING)
     private String recruitingType;
 
