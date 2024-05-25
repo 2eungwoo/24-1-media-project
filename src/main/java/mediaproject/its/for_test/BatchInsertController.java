@@ -27,4 +27,10 @@ public class BatchInsertController {
         return "success";
     }
 
+    @PostMapping("/its/test/letters")
+    public String makeLetters(){
+        batchInsertService.makeLetter();
+        return "success";
+    }
+
 }

@@ -1,6 +1,7 @@
 package mediaproject.its.for_test;
 
 import lombok.RequiredArgsConstructor;
+import mediaproject.its.domain.entity.Letter;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.PostContent;
 import mediaproject.its.domain.entity.User;
@@ -21,7 +22,8 @@ public class BatchInsertService {
     private final PostRepository postRepository;
     private final BatchInsertRepository batchInsertRepository;
     private final static int USERS_COUNT = 30000;
-    private final static int POSTS_COUNT = 500000;
+    private final static int POSTS_COUNT = 1000000;
+    private final static int LETTERS_COUNT = 500000;
 
     @Transactional
     public void makeUsers(){
@@ -84,6 +86,22 @@ public class BatchInsertService {
         batchInsertRepository.saveAllPostContents(postContents);
     }
 
+    @Transactional
+    public void makeLetter(){
+        List<Letter> letters = new ArrayList<>();
+
+        for (int i = 0; i < LETTERS_COUNT; i++) {
+            Letter letter = Letter.builder()
+                    .content(MakeRandomValues.getRandomString())
+                    .sender("user"+MakeRandomValues.getRandomNumber(1,3000))
+                    .recipient("user"+MakeRandomValues.getRandomNumber(1,3000))
+                    .readStatus(Math.random() < 0.4)
+                    .activeStatus(Math.random() < 0.8)
+                    .build();
+            letters.add(letter);
+        }
+        batchInsertRepository.saveAllLetters(letters);
+    }
 
 
 }

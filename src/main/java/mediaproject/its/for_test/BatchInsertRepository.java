@@ -1,6 +1,7 @@
 package mediaproject.its.for_test;
 
 import lombok.RequiredArgsConstructor;
+import mediaproject.its.domain.entity.Letter;
 import mediaproject.its.domain.entity.Post;
 import mediaproject.its.domain.entity.PostContent;
 import mediaproject.its.domain.entity.User;
@@ -74,6 +75,25 @@ public class BatchInsertRepository {
                     pc.setString(2, postContent.getContent());
                 });
     }
+
+
+    @Transactional
+    public void saveAllLetters(List<Letter> letters) {
+        String query = "INSERT INTO letter (content, sender_name, recipient_name, read_status, active_status, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.batchUpdate(query,
+                letters,
+                letters.size(),
+                (PreparedStatement l, Letter letter) -> {
+                    l.setString(1, letter.getContent());
+                    l.setString(2, letter.getSender());
+                    l.setString(3, letter.getRecipient());
+                    l.setBoolean(4, letter.getReadStatus());
+                    l.setBoolean(5, letter.getActiveStatus());
+                    l.setDate(6, java.sql.Date.valueOf(java.time.LocalDate.now()));
+                });
+    }
+
 
 }
 
