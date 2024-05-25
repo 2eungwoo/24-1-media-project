@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 @Getter
 @Table(indexes = {
-        @Index(name = "idx_id_active_status", columnList = "id,active_status")
+        @Index(name = "idx_id_active_status", columnList = "id, active_status")
 })
 public class User {
 

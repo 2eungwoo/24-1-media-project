@@ -11,6 +11,7 @@ import mediaproject.its.for_test.util.MakeRandomValues;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class BatchInsertService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final BatchInsertRepository batchInsertRepository;
-    private final static int USERS_COUNT = 30000;
-    private final static int POSTS_COUNT = 1000000;
-    private final static int LETTERS_COUNT = 500000;
+    private final static int USERS_COUNT = 100000;
+    private final static int POSTS_COUNT = 20;
+    private final static int LETTERS_COUNT = 100000;
 
     @Transactional
     public void makeUsers(){
@@ -56,13 +57,14 @@ public class BatchInsertService {
                     .user(fkUser)
                     .viewCount(MakeRandomValues.getRandomNumber(0,30000))
                     .likesCount(MakeRandomValues.getRandomNumber(0,30000))
-                    .commentCount(MakeRandomValues.getRandomNumber(0,30000))
+                    .commentCount(MakeRandomValues.getRandomNumber(0,30))
                     .hiringType(MakeRandomValues.getRandomHiringType())
                     .positionType(MakeRandomValues.getRandomPositionType())
                     .processType(MakeRandomValues.getRandomProcessType())
                     .recruitingType(MakeRandomValues.getRandomRecruitingType())
                     .techStackType(MakeRandomValues.getRandomTechStackType())
                     .comments(new ArrayList<>())
+                    .createdAt(LocalDateTime.now().plusNanos(i))
                     .build();
             posts.add(post);
         }
@@ -97,6 +99,7 @@ public class BatchInsertService {
                     .recipient("user"+MakeRandomValues.getRandomNumber(1,3000))
                     .readStatus(Math.random() < 0.4)
                     .activeStatus(Math.random() < 0.8)
+                    .createdAt(LocalDateTime.now().plusNanos(i))
                     .build();
             letters.add(letter);
         }

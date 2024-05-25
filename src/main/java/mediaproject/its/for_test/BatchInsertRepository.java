@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.List;
 
@@ -23,19 +24,23 @@ public class BatchInsertRepository {
     public void saveAllUsers(List<User> users) {
         String query = "INSERT INTO user (user_name, password, role, user_description, user_email, followers_count, followings_count, active_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.batchUpdate(query,
-                users,
-                users.size(),
-                (PreparedStatement u, User user) -> {
-                    u.setString(1, user.getUsername());
-                    u.setString(2, user.getPassword());
-                    u.setString(3, user.getRole());
-                    u.setString(4, user.getDescription());
-                    u.setString(5, user.getEmail());
-                    u.setInt(6, user.getFollowersCount());
-                    u.setInt(7, user.getFollowingsCount());
-                    u.setBoolean(8, user.getActiveStatus());
-                });
+        jdbcTemplate.execute((Connection conn) -> {
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                for (User user : users) {
+                    ps.setString(1, user.getUsername());
+                    ps.setString(2, user.getPassword());
+                    ps.setString(3, user.getRole());
+                    ps.setString(4, user.getDescription());
+                    ps.setString(5, user.getEmail());
+                    ps.setInt(6, user.getFollowersCount());
+                    ps.setInt(7, user.getFollowingsCount());
+                    ps.setBoolean(8, user.getActiveStatus());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+            return null;
+        });
     }
 
     @Transactional
@@ -45,35 +50,43 @@ public class BatchInsertRepository {
                 "created_at, updated_at, user_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.batchUpdate(query,
-                posts,
-                posts.size(),
-                (PreparedStatement p, Post post) -> {
-                    p.setString(1, post.getTitle());
-                    p.setInt(2, post.getViewCount());
-                    p.setInt(3, post.getLikesCount());
-                    p.setInt(4, post.getCommentCount());
-                    p.setString(5, post.getTechStackType());
-                    p.setString(6, post.getHiringType());
-                    p.setString(7, post.getRecruitingType());
-                    p.setString(8, post.getProcessType());
-                    p.setString(9, post.getPositionType());
-                    p.setDate(10, java.sql.Date.valueOf(java.time.LocalDate.now()));
-                    p.setDate(11, java.sql.Date.valueOf(java.time.LocalDate.now()));
-                    p.setInt(12, post.getUser().getId());
-                });
+        jdbcTemplate.execute((Connection conn) -> {
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                for (Post post : posts) {
+                    ps.setString(1, post.getTitle());
+                    ps.setInt(2, post.getViewCount());
+                    ps.setInt(3, post.getLikesCount());
+                    ps.setInt(4, post.getCommentCount());
+                    ps.setString(5, post.getTechStackType());
+                    ps.setString(6, post.getHiringType());
+                    ps.setString(7, post.getRecruitingType());
+                    ps.setString(8, post.getProcessType());
+                    ps.setString(9, post.getPositionType());
+                    ps.setTimestamp(10, java.sql.Timestamp.valueOf(post.getCreatedAt()));
+                    ps.setTimestamp(11, java.sql.Timestamp.valueOf(post.getCreatedAt()));
+                    ps.setInt(12, post.getUser().getId());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+            return null;
+        });
     }
     @Transactional
     public void saveAllPostContents(List<PostContent> postContents){
         String query = "INSERT INTO post_content (post_id,content) values (?,?)";
 
-        jdbcTemplate.batchUpdate(query,
-                postContents,
-                postContents.size(),
-                (PreparedStatement pc, PostContent postContent) -> {
-                    pc.setInt(1, postContent.getPostId());
-                    pc.setString(2, postContent.getContent());
-                });
+        jdbcTemplate.execute((Connection conn) -> {
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                for (PostContent postContent : postContents) {
+                    ps.setInt(1, postContent.getPostId());
+                    ps.setString(2, postContent.getContent());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+            return null;
+        });
     }
 
 
@@ -81,17 +94,21 @@ public class BatchInsertRepository {
     public void saveAllLetters(List<Letter> letters) {
         String query = "INSERT INTO letter (content, sender_name, recipient_name, read_status, active_status, created_at) VALUES (?, ?, ?, ?, ?, ?)";
 
-        jdbcTemplate.batchUpdate(query,
-                letters,
-                letters.size(),
-                (PreparedStatement l, Letter letter) -> {
-                    l.setString(1, letter.getContent());
-                    l.setString(2, letter.getSender());
-                    l.setString(3, letter.getRecipient());
-                    l.setBoolean(4, letter.getReadStatus());
-                    l.setBoolean(5, letter.getActiveStatus());
-                    l.setDate(6, java.sql.Date.valueOf(java.time.LocalDate.now()));
-                });
+        jdbcTemplate.execute((Connection conn) -> {
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                for (Letter letter : letters) {
+                    ps.setString(1, letter.getContent());
+                    ps.setString(2, letter.getSender());
+                    ps.setString(3, letter.getRecipient());
+                    ps.setBoolean(4, letter.getReadStatus());
+                    ps.setBoolean(5, letter.getActiveStatus());
+                    ps.setTimestamp(6, java.sql.Timestamp.valueOf(letter.getCreatedAt()));
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+            return null;
+        });
     }
 
 

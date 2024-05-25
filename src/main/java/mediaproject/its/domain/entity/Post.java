@@ -19,9 +19,10 @@ import java.util.List;
 @Data
 @Entity
 @Table(indexes = {
-        @Index(name = "idx_view_count", columnList = "view_count DESC"),
-        @Index(name = "idx_likes_count", columnList = "likes_count DESC"),
-        @Index(name = "idx_created_at", columnList = "created_at DESC")
+        // backward index scan 방지를 위해 desc 순으로 지정
+        @Index(name = "idx_view_count_created_at", columnList = "view_count DESC, created_at DESC"),
+        @Index(name = "idx_likes_count_created_at", columnList = "likes_count DESC, created_at DESC"),
+        @Index(name = "idx_created_at", columnList = "created_at DESC"),
 })
 public class Post {
     @Id
